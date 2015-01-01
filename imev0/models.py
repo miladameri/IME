@@ -1,5 +1,6 @@
 # This Python file uses the following encoding: utf-8
 from django.db import models
+from django_jalali.db import models as jmodels
 
 
 class MainGroup(models.Model):
@@ -42,7 +43,7 @@ class Producer(models.Model):
 
 
 class Transaction(models.Model):
-    date = models.DateField(verbose_name='تاریخ')
+    date = jmodels.jDateField(verbose_name='تاریخ')
     product = models.ForeignKey(Product, verbose_name='محصول')
     producer = models.ForeignKey(Producer, verbose_name='تولیدکننده')
     supply = models.FloatField(default=-1, verbose_name='عرضه')

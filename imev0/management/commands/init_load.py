@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from imev0.models import Transaction
 from openpyxl import load_workbook
 import datetime
+import jdatetime
 from imev0.models import *
 
 
@@ -12,7 +13,7 @@ class Command(BaseCommand):
 
     def handle(self, file_path, *args, **options):
         print(file_path)
-        wb = load_workbook(filename='imev0/test2.xlsx', read_only=True)
+        wb = load_workbook(filename=file_path[0], read_only=True)
         ws = wb.active  # ws is now an IterableWorksheet
         i = 0
         for row in ws:
@@ -56,7 +57,7 @@ class Command(BaseCommand):
 
             if thisProduct not in thisProducer.products.all():
                 thisProducer.products.add(thisProduct)
-            persian_date = datetime.date(int(dates[0]), int(dates[1]), int(dates[2]))
+            persian_date = jdatetime.date(int(dates[0]), int(dates[1]), int(dates[2]))
 
             f = Transaction(date=persian_date,
                             product=thisProduct,
