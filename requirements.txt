@@ -5,5 +5,5 @@ gunicorn==19.3.0
 psycopg2==2.6
 SQLAlchemy==1.0.4
 whitenoise==1.0.6
-openpyxl==1.7.1
-jdatetime==2.3.2
+openpyxl==2.3.2
+jdatetime==1.7.1
