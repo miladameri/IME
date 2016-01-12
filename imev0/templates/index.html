@@ -152,6 +152,18 @@
 
 
 
+
+            var b = document.getElementById(key);
+            var par = b.parentNode;
+            b.remove();
+
+            var newChild = document.createElement("canvas");
+            newChild.setAttribute("id", key);
+            newChild.setAttribute("height", "400");
+            newChild.setAttribute("width", "800");
+
+            par.appendChild(newChild);
+            console.log("par " + par);
             var ctx = document.getElementById(key).getContext("2d");
             window.myLine = new Chart(ctx).Line(lineChartData[key], {
                 responsive: true
