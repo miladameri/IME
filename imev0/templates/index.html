@@ -135,13 +135,7 @@
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: key1Supply[1],
-
-                        //Boolean - Whether to show a stroke for datasets
-                        datasetStroke : false,
-
-                        //Number - Pixel width of dataset stroke
-                        datasetStrokeWidth : 4,
+                        data: key1Supply[1]
                     },
                     {
                         type: "bar",
@@ -178,7 +172,9 @@
             var ctx = document.getElementById(key).getContext("2d");
             window.myLine = new Chart(ctx).Overlay(lineChartData[key], {
                 responsive: true,
-                multiTooltipTemplate: "<%= datasetLabel %> - <%= persianize(value) %>"
+                multiTooltipTemplate: "<%= datasetLabel %> - <%= persianize(value) %>",
+                datasetStrokeWidth : 1,
+
             });
 
 
