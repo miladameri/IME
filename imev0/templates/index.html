@@ -115,6 +115,7 @@
                 labels: key1Trade[0],
                 datasets: [
                     {
+                        barStrokeWidth : 20,
                         type: "bar",
                         label: "معامله",
                         fillColor: "rgba(220,0,0,0.5)",
@@ -127,6 +128,7 @@
                     },
                     {
                         type:"line",
+                        datasetStrokeWidth : 20,
                         label: "عرضه",
                         fillColor: "rgba(0,220,0,0.5)",
                         strokeColor: "rgba(0,220,0,1)",
@@ -169,7 +171,7 @@
             par.appendChild(newChild);
             console.log("par " + par);
             var ctx = document.getElementById(key).getContext("2d");
-            window.myLine = new Chart(ctx).Bar(lineChartData[key], {
+            window.myLine = new Chart(ctx).Line(lineChartData[key], {
                 responsive: true,
                 multiTooltipTemplate: "<%= datasetLabel %> - <%= persianize(value) %>"
             });
