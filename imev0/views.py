@@ -29,8 +29,9 @@ class Datas(View):
         code = {u"۰":"0",u"۱":"1",u"۲":"2",u"۳":"3",u"۴":"4",u"۵":"5",u"۶":"6",u"۷":"7",u"۸":"8",u"۹":"9", u"/":"/"}
         new_per = ''.join(code.get(ch, ch) for ch in per)
         dates = new_per.split('/')
+        print(dates)
         if (dates == ['']):
-            persian_date = jdate.date.today()
+            persian_date = jdate.date(1394, 8, 1)
         else:
             persian_date = jdate.date(int(dates[0]), int(dates[1]), int(dates[2]))
         result = self.get_product_producer('copper',persian_date, time_slot )

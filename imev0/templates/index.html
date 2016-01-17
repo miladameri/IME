@@ -110,12 +110,13 @@
             var key1Trade = chartDatas[key]["trade"];
             var key1Supply = chartDatas[key]["supply"];
             var key1Demand = chartDatas[key]["demand"];
+            console.log("bah bah" + key1Trade[1]);
             var data = {
                 labels: key1Trade[0],
                 datasets: [
                     {
-                        label: "My First dataset",
-                        fillColor: "rgba(220,220,220,0.2)",
+                        label: "معامله",
+                        fillColor: "rgba(220,0,0,0.5)",
                         strokeColor: "rgba(220,0,0,1)",
                         pointColor: "rgba(220,0,0,1)",
                         pointStrokeColor: "#fff",
@@ -124,9 +125,9 @@
                         data: key1Trade[1]
                     },
                     {
-                        label: "My Second dataset",
-                        fillColor: "rgba(220,220,220,0.2)",
-                        strokeColor: "rgba(220,220,220,1)",
+                        label: "عرضه",
+                        fillColor: "rgba(0,220,0,0.5)",
+                        strokeColor: "rgba(0,220,0,1)",
                         pointColor: "rgba(220,220,220,1)",
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
@@ -134,8 +135,8 @@
                         data: key1Supply[1]
                     },
                     {
-                        label: "My Third dataset",
-                        fillColor: "rgba(220,220,220,0.2)",
+                        label: "تقاضا",
+                        fillColor: "rgba(0,0,220,0.5)",
                         strokeColor: "rgba(0,0,220,1)",
                         pointColor: "rgba(0,0,220,1)",
                         pointStrokeColor: "#fff",
@@ -144,7 +145,7 @@
                         data: key1Demand[1]
                     },
 
-                    ]
+                ]
             };
 
             lineChartData[key] = data;
@@ -159,22 +160,36 @@
 
             var newChild = document.createElement("canvas");
             newChild.setAttribute("id", key);
-            newChild.setAttribute("height", "400");
-            newChild.setAttribute("width", "800");
+            newChild.setAttribute("height", "900");
+            newChild.setAttribute("width", "1400");
 
             par.appendChild(newChild);
             console.log("par " + par);
             var ctx = document.getElementById(key).getContext("2d");
-            window.myLine = new Chart(ctx).Line(lineChartData[key], {
-                responsive: true
+            window.myLine = new Chart(ctx).Bar(lineChartData[key], {
+                responsive: true,
+                multiTooltipTemplate: "<%= datasetLabel %> - <%= persianize(value) %>"
             });
+
 
         };
         $(document).ready(function () {
             console.log($("#sel1").val())
             get_data_from_server()
         });
+        persian={'0':'۰','1':'۱','2':'۲','3':'۳','4':'۴','5':'۵','6':'۶','7':'۷','8':'۸','9':'۹'};
 
+        function persianize(n)
+        {
+            var nStr = n.toString();
+            console.log("here " + nStr + " " + nStr.length);
+            var s = ""
+            for (var i = 0; i < nStr.length; i++) {
+                console.log(i + " " + nStr[i] + " " + persian[nStr[i]]);
+                s += persian[nStr[i]];
+            }
+            return s;
+        }
 
     </script>
 
@@ -195,14 +210,14 @@
                         var entry = result.feed.entries[i];
 //                        var n = entry.content.search(" مس ");
 //                        if (n != -1) {
-                            var list = document.createElement("li");
-                            list.setAttribute("class", "news-item");
+                        var list = document.createElement("li");
+                        list.setAttribute("class", "news-item");
 
-                            list.innerHTML = "<div class='container-fluid' >" +
-                                    "<img src='{% static 'img/eqtesad.png' %}'  style='margin-left: 0' class='col-sm-2 img-circle' alt='Responsive image'>" +
+                        list.innerHTML = "<div class='container' >" +
+                                "<img src='{% static 'img/eqtesad.png' %}'  style='margin-left: 0' class='col-sm-1 img-circle' alt='Responsive image'>" +
 
-                                    "<div class='col-sm-10' style='margin-right: 0'><a href='"+ entry.link + "'>" + entry.title +"</a><br><span style='font-size: small; display: inline-block;'><p>"+entry.content + "</p></span></div>"+
-                                    " </div>";
+                                "<div class='col-sm-11' style='margin-right: 0'><a href='"+ entry.link + "'>" + entry.title +"</a><br><span style='font-size: small; display: inline-block;'><p>"+entry.content + "</p></span></div>"+
+                                " </div>";
 //                            var table = document.createElement("table");
 //                            table.setAttribute("cellpadding", "4");
 //                            var tr = document.createElement("tr");
@@ -222,7 +237,7 @@
 //                            tr.appendChild(td2);
 //                            table.appendChild(tr);
 //                            list.appendChild(table);
-                            container.appendChild(list);
+                        container.appendChild(list);
 //                        }
                     }
                 }
@@ -248,7 +263,7 @@
             datasets : [
                 {
                     label: "My First dataset",
-                    fillColor : "rgba(220,220,220,0.2)",
+                    fillColor : "rgba(220,220,220,220.2)",
                     strokeColor : "rgba(220,220,220,1)",
                     pointColor : "rgba(220,220,220,1)",
                     pointStrokeColor : "#fff",
@@ -503,10 +518,10 @@
                     </header>
 
                     <div class="panel-body">
-                                <ul class="container-fluid demo1" id="feed">
+                        <ul class="container-fluid demo1" id="feed">
 
-                                </ul>
-                        </div>
+                        </ul>
+                    </div>
 
                     <div class="panel-footer"> </div>
 
@@ -521,18 +536,18 @@
 
 
 <!--<script type="text/javascript">-->
-    <!--$(function () {-->
-        <!--$(".demo1").bootstrapNews({-->
-            <!--newsPerPage: 3,-->
-            <!--autoplay: true,-->
-            <!--pauseOnHover:true,-->
-            <!--direction: 'up',-->
-            <!--newsTickerInterval: 4000,-->
-            <!--onToDo: function () {-->
-                <!--console.log(this);-->
-            <!--}-->
-        <!--});-->
-    <!--});-->
+<!--$(function () {-->
+<!--$(".demo1").bootstrapNews({-->
+<!--newsPerPage: 3,-->
+<!--autoplay: true,-->
+<!--pauseOnHover:true,-->
+<!--direction: 'up',-->
+<!--newsTickerInterval: 4000,-->
+<!--onToDo: function () {-->
+<!--console.log(this);-->
+<!--}-->
+<!--});-->
+<!--});-->
 <!--</script>-->
 
 
