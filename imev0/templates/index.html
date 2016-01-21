@@ -58,8 +58,11 @@
     <style>
         @font-face {
             font-family: "XB Titre";
-            src: url('{% static 'fonts/XB Titre.ttf' %}');
-            src: local('{% static 'fonts/XB Titre.ttf' %}');
+            src: url("{% static 'fonts/XB Titre.ttf' %}");
+            src: local("{% static 'fonts/XB Titre.ttf' %}");
+        }
+        .main-panel-heading>span {
+            font-family: "XB Titre" !important;
         }
     </style>
 
