@@ -24,5 +24,66 @@
 {
     padding:4px 4px;
     margin:0px;
-    border-bottom:1px dotted #555; 
+    border-bottom:1px dotted #555;
+}
+
+.nav-tabs
+{
+    height: 80px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    width: 100% !important;
+}
+
+.nav-tabs>li, .nav-tabs>li>a
+{
+    height: inherit;
+    font-size: 30px;
+    font-family: "XB Titre";
+    padding: 0px !important;
+    line-height: 80px !important;
+}
+
+.nav-tabs>li:hover, .nav-tabs>li>a:hover
+{
+    background-color: #7f90d3 !important;
+}
+
+.nav-tabs > li.active > a,
+        .nav-tabs > li.active > a:hover,
+        .nav-tabs > li.active > a:focus
+{
+    color: transparent;
+    background-color: #f2f2f2 !important;
+}
+
+.nav-tabs {
+    background-color: #afbcf3 !important;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+
+
+.main-content {
+
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+    padding-bottom: 2%;
+}
+
+.main-panel-heading>span
+{
+    color: white !important;
+    font-family: "XB Titre" !important;
+    font-size: 20px;
+}
+
+span
+{
+    font-family: "XB Niloofar";
+}
+
+i{
+     color: white !important;
 }
