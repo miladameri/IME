@@ -291,9 +291,9 @@
                         list.setAttribute("class", "news-item");
 
                         list.innerHTML = "<div class='container' >" +
-                                "<img src='{% static 'img/eqtesad.png' %}'  style='margin-left: 0' class='col-sm-1 img-circle' alt='Responsive image'>" +
+                                "<img src='{% static 'img/eqtesad.png' %}'  style='margin-left: 0 !important' class='col-sm-1 img-circle' alt='Responsive image'>" +
 
-                                "<div class='col-sm-11' style='margin-right: 0'><a href='"+ entry.link + "'>" + entry.title +"</a><br><span style='font-size: small; display: inline-block;'><p>"+entry.content + "</p></span></div>"+
+                                "<div class='col-sm-11' style='font-size: medium; margin-right: 0 !important'><a href='"+ entry.link + "'>" + entry.title +"</a><br><span style='font-size: small; display: inline-block !important;'><p>"+entry.content + "</p></span></div>"+
                                 " </div>";
                         container.appendChild(list);
                     }
@@ -333,7 +333,7 @@
 
     <div class="tab-content">
         <div id="menu1" class="tab-pane fade in active">
-            <div class="container-fluid panel-container" style="margin-top: 2%; padding: 2%">
+            <div class="container-fluid panel-container" style="margin-top: 1%; padding: 2%">
                 <div class="panel">
                     <div class="panel-heading main-panel-heading" style="background-color: #4250ae">
                         <i class="glyphicon glyphicon-stats"></i><span>&nbsp;&nbsp;بازار داخلی</span>
@@ -376,7 +376,11 @@
                         <i class="glyphicon glyphicon-list-alt"></i><span>&nbsp;&nbsp;اخبار</span>
                     </div>
                     <div class="panel-body col-lg-12" style="background-color: #afbcf3">
+                        <ul class="container-fluid demo1" id="feed" style="margin-right: 0px; padding: 0px">
+
+                            </ul>
                     </div>
+                    <div class="panel-footer" style="background-color:#afbcf3 "></div>
                 </div>
                     </div>
             </div>
