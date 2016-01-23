@@ -54,11 +54,6 @@
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <link href="{% static 'css/test.css' %}" rel="stylesheet">
     <link href="{% static 'css/style-responsive.css' %}" rel="stylesheet" />
-    <link rel="stylesheet" href="{% static 'jalalijscalendar/skins/aqua/theme.css' %}">
-    <script src="{% static 'jalalijscalendar/jalali.js' %}"></script>
-    <script src="{% static 'jalalijscalendar/calendar.js' %}"></script>
-    <script src="{% static 'jalalijscalendar/calendar-setup.js' %}"></script>
-    <script src="{% static 'jalalijscalendar/lang/calendar-fa.js' %}"></script>
 
     <style>
         @font-face {
@@ -88,74 +83,7 @@
 
             return {"date":$("#fromDate1").val() ,  "time_slot": time_slot};
         }
-        function add_date_options(){
-            var day = document.getElementById("day");
-            day.innerHTML = "<option disabled selected>روز</option>";
-            for (var i = 1; i < 32; i++) {
-                var x = document.createElement("option");
-                x.innerHTML = persianize(i);
-                day.appendChild(x);
-            }
-            var month = document.getElementById("month");
-            month.innerHTML = "<option disabled selected>ماه</option>";
-            for (var i = 1; i < 13; i++) {
-                var x = document.createElement("option");
-                x.innerHTML = persianize(i);
-                month.appendChild(x);
-            }
-            var year = document.getElementById("year");
-            year.innerHTML = "<option disabled selected>سال</option>";
-            for (var i = 1388; i < 1410; i++) {
-                var x = document.createElement("option");
-                x.innerHTML = persianize(i);
-                year.appendChild(x);
-            }
-        }
-
-        function set_date() {
-            var value = $("#date_input").val();
-            var month = document.getElementById("month");
-            var day = document.getElementById("day");
-            var year = document.getElementById("year");
-            var split = value.split("/");
-            var dayVal = parseInt(split[2]);
-            var monthVal = parseInt(split[1]);
-            var yearVal = parseInt(split[0]);
-            var months = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
-            day.innerHTML = "";
-            for (var i = 1; i < 32; i++) {
-                var x = document.createElement("option");
-                x.innerHTML = persianize(i);
-                if (i == dayVal) {
-                    x.selected = true;
-                }
-                day.appendChild(x);
-            }
-            month.innerHTML = "";
-            for (var i = 1; i < 13; i++) {
-                var x = document.createElement("option");
-                x.innerHTML = months[i-1];
-
-                if (i == monthVal) {
-                    x.selected = true;
-                }
-                month.appendChild(x);
-            }
-            year.innerHTML = "";
-            for (var i = 1388; i < 1410; i++) {
-                var x = document.createElement("option");
-                x.innerHTML = persianize(i);
-                if (i == yearVal) {
-                    x.selected = true;
-                }
-                year.appendChild(x);
-            }
-
-
-        }
-
         function get_data_from_server(){
-            add_date_options();
             var labels = null;
             var datas = null;
             $.ajax({
@@ -167,7 +95,7 @@
                 },
                 type: "GET",
                 success: function (response) {
-
+                    console.log("in heeree")
                     datas = response['datas'];
 
                     for (var i = 0; i < Object.keys(datas).length ;i++){
@@ -344,8 +272,10 @@
         function persianize(n)
         {
             var nStr = n.toString();
+            console.log("here " + nStr + " " + nStr.length);
             var s = ""
             for (var i = 0; i < nStr.length; i++) {
+                console.log(i + " " + nStr[i] + " " + persian[nStr[i]]);
                 s += persian[nStr[i]];
             }
             return s;
@@ -472,44 +402,138 @@
             </div>
         </div>
         <div id="menu2" class="tab-pane fade">
-            <div class="col-lg-11" style=" margin-top: 2%">
 
-                <form class="form-inline">
-                    <div class="form-group" style="font-family: 'XB Niloofar'; font-size: x-large;">
-                        <label>- اضافه کردن نمودار</label>
-
-                        <select class="form-control" style="box-sizing:content-box;">
-                            <option disabled selected>بازه زمانی</option>
-                            <option>سه هفته</option>
-                            <option>سه ماه</option>
-                            <option>یک سال</option>
-                        </select>
-                        <label>منتهی به</label>
-
-                        <select class="form-control" id = "day" style="box-sizing:content-box;">
-                            <option disabled selected>روز</option>
-                        </select>
-                        <select class="form-control" id = "month" style="box-sizing:content-box;">
-                            <option disabled selected>ماه</option>
-
-                        </select>
-                        <select class="form-control" id="year" style="box-sizing:content-box;">
-                        </select>
-                        <input id="date_input" class="form-control" type="hidden" onchange="set_date()"><button id="date_btn" class="form-control glyphicon glyphicon-calendar" style="margin-right: 0 !important;background-color: transparent; border: none; color: #d6403f; font-size: large"></button>
-                        <script>
-                            Calendar.setup({
-                                inputField: 'date_input',
-                                button: 'date_btn',
-                                ifFormat: '%Y/%m/%d',
-                                dateType: 'jalali',
-                                displayArea: 'displau_area_1'
-                            });
-                        </script>
+            <!--main content start-->
+            <section class="wrapper">
+                <!--state overview start-->
+                <div class="row state-overview">
+                    <div class="col-lg-3 col-sm-6">
+                        <section class="panel">
+                            <div class="symbol terques">
+                                <i class="icon-globe"></i>
+                            </div>
+                            <div class="value">
+                                <h1>22</h1>
+                                <p>قیمت در بازار جهانی</p>
+                            </div>
+                        </section>
                     </div>
-                    <button type="submit" class="glyphicon glyphicon-plus" style="color: #28ac0b; background-color: transparent; border: none; font-size: x-large"></button>
-                </form>
+                    <div class="col-lg-3 col-sm-6">
+                        <section class="panel">
+                            <div class="symbol red">
+                                <i class="icon-circle-arrow-down"></i>
+                            </div>
+                            <div class="value">
+                                <h1>140</h1>
+                                <p>میانگین قیمت روز</p>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <section class="panel">
+                            <div class="symbol yellow">
+                                <i class="icon-calendar"></i>
+                            </div>
+                            <div class="value">
+                                <h1>345</h1>
+                                <p>میانگین قیمت هفته</p>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <!--state overview end-->
 
-            </div>
+                <section class="panel panel-transparent col-sm-12">
+                    <div class="container-fluid panel-heading col-sm-12" style="background-color: #6789b7; color: snow;">
+                        <div class="col-md-12 container">
+                            <div class="col-sm-6" style="vertical-align: middle;float: right;"><span style=" line-height:2;vertical-align: middle;float: right;">نمودارها</span></div>
+                            <div class="col-sm-6 " style="float: left;margin: 0; padding: 0;">
+                                <div class="form-group col-sm-6" style="margin: 0; padding: 0; float: right;">
+                                    <div class="input-group" style="margin: 0; padding: 0;">
+                                        <div  class="input-group-addon" data-mddatetimepicker="true" data-trigger="click" data-targetselector="#fromDate1" data-groupid="group1" data-fromdate="true" data-enabletimepicker="false" data-placement="right">
+                                            <i class="icon-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control" id="fromDate1" placeholder="تاریخ شروع" data-mddatetimepicker="true" data-trigger="click" data-targetselector="#fromDate1" data-groupid="group1" data-fromdate="true" data-enabletimepicker="false" data-placement="right"/>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-sm-4" style="margin-bottom: 0; padding-bottom: 0;">
+                                    <select class="form-control" id="sel1">
+                                        <option>یک هفته</option>
+                                        <option>سه هفته</option>
+                                        <option>سه ماه</option>
+                                        <option>یک سال</option>
+                                    </select>
+
+                                </div>
+                                <button type="submit" class="btn" style="background-color: #265a88" onclick="get_data_from_server()">مشاهده</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div style="padding-bottom: 0ex"></div>
+                    <div class="panel-body" >
+                        <div class="col-lg-6 container-fluid">
+                            <section class="panel  col-lg-12 " >
+                                <header class="panel-heading">
+                                    <span>شرکت ملی صنایع مس ایران - مس کاتد</span>
+                                </header>
+                                <div class="panel-body">
+                                    <div><canvas id='NCI-CCAA-00' height="400" width="800"></canvas></div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-lg-6">
+                            <section class="panel col-lg-12">
+                                <header class="panel-heading">
+                                    <span>شرکت ملی صنایع مس ایران - مس مفتول</span>
+                                </header>
+                                <div class="panel-body">
+                                    <div><canvas id='NCI-CR08AB-00' height="400" width="800"></canvas></div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-lg-6">
+                            <section class="panel  col-lg-12 ">
+                                <header class="panel-heading">
+                                    <span>شرکت ملی صنایع مس ایران - مس کم عیار (سرباره G)</span>
+                                </header>
+                                <div class="panel-body">
+                                    <div><canvas id='NCI-SLG-00' height="400" width="800"></canvas></div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-lg-6">
+                            <section class="panel col-lg-12">
+                                <header class="panel-heading">
+                                    <span>شرکت ملی صنایع مس ایران - مس کم عیار (سرباره R)</span>
+                                </header>
+                                <div class="panel-body">
+                                    <div><canvas id='NCI-SLR-00' height="400" width="800"></canvas></div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-lg-6">
+                            <section class="panel col-lg-12">
+                                <header class="panel-heading">
+                                    <span>صنایع تولیدی دنیای مس کاشان - مس مفتول</span>
+                                </header>
+                                <div class="panel-body">
+                                    <div><canvas id='CWD-CR08AB-00' height="400" width="800"></canvas></div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+
+
+            <!--main content end-->
+
+
         </div>
     </div>
 </div>
