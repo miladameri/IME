@@ -10,6 +10,13 @@ THREE_MONTHS = 12
 ONE_YEAR = 52
 
 
+class Test(TemplateView):
+    template_name = 'test.html'
+    #template_name = 'test.html'
+    def get_context_data(self, **kwargs):
+        context = super(Test, self).get_context_data(**kwargs)
+        return context
+
 class Index(TemplateView):
     template_name = 'index.html'
     #template_name = 'test.html'

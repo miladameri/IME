@@ -39,7 +39,7 @@
 {
     height: inherit;
     font-size: 30px;
-    font-family: "XB Titre";
+    font-family: "titr";
     padding: 0px !important;
     line-height: 80px !important;
 }
@@ -92,3 +92,13 @@ i{
     border: 1px solid white !important;
     color: white !important;
 }
+
+
+@font-face {
+ font-family: "titr";
+ src: url(../../static/fonts/xb_titre.eot);
+ src: url(../../static/fonts/xb_titre.eot?#iefix) format("embedded-opentype"),
+ url(../../static/fonts/xb_titre.woff) format("woff"),
+ url(../../static/fonts/xb_titre.svg#BYekan) format("svg");
+ font-weight: normal;
+ font-style: normal; }

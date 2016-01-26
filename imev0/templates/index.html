@@ -60,16 +60,6 @@
     <script src="{% static 'jalalijscalendar/calendar-setup.js' %}"></script>
     <script src="{% static 'jalalijscalendar/lang/calendar-fa.js' %}"></script>
 
-    <style>
-        @font-face {
-            font-family: "XB Titr";
-            src: url("{% static 'fonts/XB Titre.ttf' %}");
-            src: local("{% static 'fonts/XB Titre.ttf' %}");
-        }
-        .main-panel-heading>span {
-            font-family: 'XB Titr', serif !important;
-        }
-    </style>
 
     <script>
         var lineChartData = {};
@@ -158,31 +148,31 @@
             add_date_options();
             var labels = null;
             var datas = null;
-            $.ajax({
-                url: " {% url 'getDatas' %}",
-                dataType: "json",
-                data:
-                {
-                    "select_and_time" : select_and_time()
-                },
-                type: "GET",
-                success: function (response) {
-
-                    datas = response['datas'];
-
-                    for (var i = 0; i < Object.keys(datas).length ;i++){
-
-                        var key = Object.keys(datas)[i];
-                        create_chart(datas,key);
-                    }
-
-                },
-                complete: function () {
-                },
-                error: function (xhr, textStatus, thrownError) {
-                    alert("error doing something");
-                }
-            });
+{#            $.ajax({#}
+{#                url: " {% url 'getDatas' %}",#}
+{#                dataType: "json",#}
+{#                data:#}
+{#                {#}
+{#                    "select_and_time" : select_and_time()#}
+{#                },#}
+{#                type: "GET",#}
+{#                success: function (response) {#}
+{##}
+{#                    datas = response['datas'];#}
+{##}
+{#                    for (var i = 0; i < Object.keys(datas).length ;i++){#}
+{##}
+{#                        var key = Object.keys(datas)[i];#}
+{#                        create_chart(datas,key);#}
+{#                    }#}
+{##}
+{#                },#}
+{#                complete: function () {#}
+{#                },#}
+{#                error: function (xhr, textStatus, thrownError) {#}
+{#                    alert("error doing something");#}
+{#                }#}
+{#            });#}
 
         }
 
@@ -337,7 +327,7 @@
                 responsive: true,
             });
             console.log($("#sel1").val())
-{#            get_data_from_server()#}
+            get_data_from_server()
         });
         persian={'0':'۰','1':'۱','2':'۲','3':'۳','4':'۴','5':'۵','6':'۶','7':'۷','8':'۸','9':'۹'};
 
@@ -349,6 +339,20 @@
                 s += persian[nStr[i]];
             }
             return s;
+        }
+
+        function persianize_string(s)
+        {
+            var ans = "";
+            for (var i = 0;i < s.length; i++) {
+                if (s[i] >= '0' && s[i] <= '9') {
+                    ans += persianize(parseInt(s[i]));
+                }
+                else {
+                    ans += s[i];
+                }
+            }
+            return ans;
         }
 
     </script>
@@ -395,6 +399,44 @@
 
     </script>
 
+
+    <script>
+        function add_chart(){
+            var heading_text = "نمودار  "+ $('#chart-type').val() + " منتهی به تاریخ &nbsp" + persianize_string($('#date_input').val()) + " ( " + $('input[name="type"]:checked').val() + " )";
+            var cont = document.getElementById('menu2');
+            var panel_container = document.createElement("div");
+{#             <div class="container-fluid panel-container" style="margin-top: 1%; padding: 2%">;#}
+            panel_container.setAttribute("class", "container-fluid panel-container");
+            panel_container.setAttribute("style", "margin-top: 1%; padding: 2%");
+
+            var panel = document.createElement('div');
+            panel.setAttribute("class", "panel");
+            var heading = document.createElement("div");
+            heading.setAttribute("class", "panel-heading main-panel-heading");
+            heading.setAttribute("style", "background-color: #4250ae");
+            heading.innerHTML = '<span><i class="glyphicon glyphicon-stats"></i>&nbsp;&nbsp;' +
+                    heading_text + '</span>';
+            var removeB = document.createElement('button');
+            removeB.setAttribute("style" , "float:left; color: red; background-color: transparent; border: none; font-size: large");
+            removeB.setAttribute("class", "deleteMe");
+            removeB.innerHTML = "<i class='glyphicon glyphicon-trash'></i>";
+            heading.appendChild(removeB);
+            panel.appendChild(heading);
+
+            var body = document.createElement("div");
+            body.setAttribute("class", "panel-body col-lg-12");
+            body.setAttribute("style", "background-color: #afbcf3;");
+            panel.appendChild(body);
+
+            panel_container.appendChild(panel);
+            cont.insertBefore(panel_container, cont.firstChild);
+            return false;
+        }
+
+        $(document).on("click",".deleteMe", function(){
+            $(this).closest(".panel-container").remove();
+        });
+    </script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
     <!--[if lt IE 9]>
@@ -472,17 +514,18 @@
             </div>
         </div>
         <div id="menu2" class="tab-pane fade">
-            <div class="" style=" margin-top: 2%; margin-right: 2%">
+            <div class="col-lg-12" style=" margin-top: 2%; margin-right: 2%">
 
                 <form class="form-inline">
                     <div class="form-group" style="font-family: 'XB Niloofar'; font-size: x-large;">
                         <label>- اضافه کردن نمودار</label>
 
-                        <select class="form-control" style="box-sizing:content-box;">
+                        <select id = "chart-type"class="form-control" style="box-sizing:content-box;">
                             <option disabled selected>بازه زمانی</option>
-                            <option>سه هفته</option>
-                            <option>سه ماه</option>
-                            <option>یک سال</option>
+                            <option>سه هفتگی</option>
+                            <option>فصلی</option>
+                            <option>سالانه</option>
+
                         </select>
                         </div><div class="form-group push-right" style="font-family: 'XB Niloofar'; font-size: x-large;">
                         <label>منتهی به</label>
@@ -507,19 +550,20 @@
                             });
                         </script>
                         <label style="font-size: medium !important;" >عرضه</label>
-                        <input type="radio" class="form-control push-right" id="arze" name="type">
+                        <input type="radio" class="form-control push-right" id="arze" name="type" value="عرضه">
                     <label style="font-size: medium !important;">تقاضا</label>
-                        <input type="radio" class="form-control push-right" id="taghaza" name="type">
+                        <input type="radio" class="form-control push-right" id="taghaza" name="type" value="تقاضا">
                     <label style="font-size: medium !important;">معامله</label>
-                        <input type="radio" class="form-control push-right" id="moamele" name="type">
+                        <input type="radio" class="form-control push-right" id="moamele" name="type" value="معامله">
                     <label style="font-size: medium !important;">ارزش</label>
-                        <input type="radio" class="form-control push-right" id="arzesh" name="type">
-                        <button type="submit" class="form-control glyphicon glyphicon-plus" style="color: #28ac0b; background-color: transparent; border: none; font-size: x-large"></button>
+                        <input type="radio" class="form-control push-right" id="arzesh" name="type" value="ارزش">
+                        <button type="button" class="form-control glyphicon glyphicon-plus" style="color: #28ac0b; background-color: transparent; border: none; font-size: x-large" onclick="add_chart()"></button>
                     </div>
                 </form>
 
             </div>
         </div>
+
     </div>
 </div>
 
