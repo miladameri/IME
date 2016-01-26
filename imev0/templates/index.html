@@ -404,7 +404,7 @@
     <script>
         function add_chart(){
             var selectDate = $('#day').val()+"&nbsp;" + $('#month').val() + "&nbsp;" + $('#year').val()
-            var heading_text = "نمودار  "+ $('#chart-t').val() + " منتهی به تاریخ &nbsp" + persianize_string(selectDate) + " ( " + $('input[name="type"]:checked').val() + " )";
+            var heading_text = "نمودار  "+ $('#chart-type').val() + " منتهی به تاریخ &nbsp" + persianize_string(selectDate) + " ( " + $('input[name="type"]:checked').val() + " )";
             var cont = document.getElementById('menu2');
             var panel_container = document.createElement("div");
 {#             <div class="container-fluid panel-container" style="margin-top: 1%; padding: 2%">;#}
