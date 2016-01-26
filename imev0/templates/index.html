@@ -64,19 +64,18 @@
     <script>
         var lineChartData = {};
         function select_and_time(){
-            console.log($("#fromDate1").val());
-            console.log($("#sel1").val());
-            var time_slot = 1;
-            if ($("#sel1").val() == 'یک هفته')
-                time_slot = 1;
-            else if ($("#sel1").val() == 'سه هفته')
-                time_slot = 3;
-            else if ($("#sel1").val() == 'سه ماه')
-                time_slot = 12;
-            else if ($("#sel1").val() == 'یک سال')
-                time_slot = 52;
+            console.log($("#date_input").val());
+            var time_slot = 3;
+{#            if ($("#chart-type").val() == 'یک هفته')#}
+{#                time_slot = 1;#}
+{#            else if ($("#chart-type").val() == 'سه هفتگی')#}
+{#                time_slot = 3;#}
+{#            else if ($("#chart-type").val() == 'فصلی')#}
+{#                time_slot = 12;#}
+{#            else if ($("#chart-type").val() == 'سالانه')#}
+{#                time_slot = 52;#}
 
-            return {"date":$("#fromDate1").val() ,  "time_slot": time_slot};
+            return {"date":$("#date_input").val() ,  "time_slot": time_slot};
         }
         function add_date_options(){
             var day = document.getElementById("day");
@@ -146,34 +145,33 @@
         }
 
         function get_data_from_server(){
-            add_date_options();
             var labels = null;
             var datas = null;
-{#            $.ajax({#}
-{#                url: " {% url 'getDatas' %}",#}
-{#                dataType: "json",#}
-{#                data:#}
-{#                {#}
-{#                    "select_and_time" : select_and_time()#}
-{#                },#}
-{#                type: "GET",#}
-{#                success: function (response) {#}
-{##}
-{#                    datas = response['datas'];#}
-{##}
-{#                    for (var i = 0; i < Object.keys(datas).length ;i++){#}
-{##}
-{#                        var key = Object.keys(datas)[i];#}
-{#                        create_chart(datas,key);#}
-{#                    }#}
-{##}
-{#                },#}
-{#                complete: function () {#}
-{#                },#}
-{#                error: function (xhr, textStatus, thrownError) {#}
-{#                    alert("error doing something");#}
-{#                }#}
-{#            });#}
+            $.ajax({
+                url: " {% url 'getDatas' %}",
+                dataType: "json",
+                data:
+                {
+                    "select_and_time" : select_and_time()
+                },
+                type: "GET",
+                success: function (response) {
+
+                    datas = response['datas'];
+
+                    for (var i = 0; i < Object.keys(datas).length ;i++){
+
+                        var key = Object.keys(datas)[i];
+                        create_chart(datas,key);
+                    }
+
+                },
+                complete: function () {
+                },
+                error: function (xhr, textStatus, thrownError) {
+                    alert("error doing something");
+                }
+            });
 
         }
 
@@ -327,8 +325,9 @@
             new Chart(ctx).PolarArea(data2,{
                 responsive: true,
             });
-            console.log($("#sel1").val())
-            get_data_from_server()
+            console.log($("#sel1").val());
+            add_date_options();
+{#            get_data_from_server()#}
         });
         persian={'0':'۰','1':'۱','2':'۲','3':'۳','4':'۴','5':'۵','6':'۶','7':'۷','8':'۸','9':'۹'};
 
@@ -428,10 +427,14 @@
             var body = document.createElement("div");
             body.setAttribute("class", "panel-body col-lg-12");
             body.setAttribute("style", "background-color: #afbcf3;");
+            body.innerHTML = '<div class="col-lg-5 container" ><section class="panel"><canvas  height="350" width="100"></canvas></section> </div> ' +
+                    '<div class="col-lg-7 container""> <section class="panel" style="padding-top: 3% !important"><canvas id="NCI-CR08AB-00" height=100" width="500"></canvas>' +
+                    '</div></section></section>';
             panel.appendChild(body);
 
             panel_container.appendChild(panel);
             cont.insertBefore(panel_container, cont.firstChild);
+            get_data_from_server();
             return false;
         }
 
