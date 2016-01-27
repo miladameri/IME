@@ -114,3 +114,11 @@ i{
     font-weight: normal;
     font-style: normal;
 }
+
+select {
+    color: #000 !important;
+}
+
+.shadow {
+    box-shadow: 10px 10px 10px #2d4666 !important;
+}

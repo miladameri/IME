@@ -12,6 +12,7 @@
 
     <title>IME Dashboard</title>
     <link rel="shortcut icon" href="{% static 'img/icon.jpg'%}">
+    <link rel="stylesheet" href="{% static 'css/pick-a-color-1.2.3.min.css' %}">
     <script src="{% static 'js/jquery.js' %}"></script>
     <script src="{% static 'js/jquery-2.1.4.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/bootstrap.min.js' %}" type="text/javascript"></script>
@@ -66,14 +67,14 @@
         function select_and_time(){
             console.log($("#date_input").val());
             var time_slot = 3;
-{#            if ($("#chart-type").val() == 'یک هفته')#}
-{#                time_slot = 1;#}
-{#            else if ($("#chart-type").val() == 'سه هفتگی')#}
-{#                time_slot = 3;#}
-{#            else if ($("#chart-type").val() == 'فصلی')#}
-{#                time_slot = 12;#}
-{#            else if ($("#chart-type").val() == 'سالانه')#}
-{#                time_slot = 52;#}
+            {#            if ($("#chart-type").val() == 'یک هفته')#}
+            {#                time_slot = 1;#}
+            {#            else if ($("#chart-type").val() == 'سه هفتگی')#}
+            {#                time_slot = 3;#}
+            {#            else if ($("#chart-type").val() == 'فصلی')#}
+            {#                time_slot = 12;#}
+            {#            else if ($("#chart-type").val() == 'سالانه')#}
+            {#                time_slot = 52;#}
 
             return {"date":$("#date_input").val() ,  "time_slot": time_slot};
         }
@@ -251,6 +252,7 @@
 
         };
         $(document).ready(function () {
+
             var data = [
                 {
                     value: 300,
@@ -327,7 +329,7 @@
             });
             console.log($("#sel1").val());
             add_date_options();
-{#            get_data_from_server()#}
+            {#            get_data_from_server()#}
         });
         persian={'0':'۰','1':'۱','2':'۲','3':'۳','4':'۴','5':'۵','6':'۶','7':'۷','8':'۸','9':'۹'};
 
@@ -406,7 +408,7 @@
             var heading_text = "نمودار  "+ $('#chart-type').val() + " منتهی به تاریخ &nbsp" + persianize_string(selectDate) + " ( " + $('input[name="type"]:checked').val() + " )";
             var cont = document.getElementById('menu2');
             var panel_container = document.createElement("div");
-{#             <div class="container-fluid panel-container" style="margin-top: 1%; padding: 2%">;#}
+            {#             <div class="container-fluid panel-container" style="margin-top: 1%; padding: 2%">;#}
             panel_container.setAttribute("class", "container-fluid panel-container");
             panel_container.setAttribute("style", "margin-top: 1%; padding: 2%");
 
@@ -426,10 +428,12 @@
 
             var body = document.createElement("div");
             body.setAttribute("class", "panel-body col-lg-12");
-            body.setAttribute("style", "background-color: #afbcf3;");
-            body.innerHTML = '<div class="col-lg-5 container" ><section class="panel"><canvas  height="350" width="100"></canvas></section> </div> ' +
-                    '<div class="col-lg-7 container""> <section class="panel" style="padding-top: 3% !important"><canvas id="NCI-CR08AB-00" height=100" width="500"></canvas>' +
-                    '</div></section></section>';
+            body.setAttribute("style", "background-color: #afbcf3; padding-left: 0px; padding-right: 0px");
+            body.innerHTML = '<div class="col-lg-5 container" style="padding-left: 0px !important"><section class="panel "><div class=" shadow col-lg-12 panel-heading white-bg"><span style="float:right; font-size: x-large">داده‌های نمودار</span><span style="padding: 0px; float:left; color:green; font-size:x-large;" onclick="add_selector(); border: none">+</span></div>' +
+                    ' <div class="col-lg-12 shadow panel-body white-bg" id = "selectors"></div>' +
+                    '</section> </div> ' +
+                    '<div class="col-lg-7 container""> <section class="shadow panel" style="padding-top: 3% !important"><canvas id="NCI-CR08AB-00" height=100" width="500"></canvas>' +
+                    '</div></section></section>';;
             panel.appendChild(body);
 
             panel_container.appendChild(panel);
@@ -438,6 +442,64 @@
             return false;
         }
 
+        function add_selector() {
+            var selector = document.getElementById("selectors");
+            var selectorId = "color"+selector.childElementCount;
+            selector.innerHTML += '<table style="border-spacing: 4px;border-collapse: separate;">' +
+                    '<tr><td>' +
+                    '<select class="form-control push-right" style="box-sizing:content-box;"> ' +
+                    '<option selected>همه‌ی گروه‌های اصلی</option>' +
+                    '<option selected>صنعتی</option>' +
+                    '</select>' +
+                    '</td>' +
+                    '<td>' +
+                    '<select class="form-control push-right"style="box-sizing:content-box; "> ' +
+                    '<option>همه‌ی گروه‌ها</option>' +
+                    '<option>آلومینیوم</option>' +
+                    '<option selected>مس</option>' +
+                    '<option>فولاد</option>' +
+                    '<option>طلا</option>' +
+                    '<option>نیکل</option>' +
+                    '<option>روی</option>' +
+                    '<option>کک</option>' +
+                    '<option>سیمان</option>' +
+                    '<option>سنگ‌آهن</option>' +
+                    '<option>کنسانتره</option>' +
+                    '<option>کنسانتره مولبیدن</option>' +
+                    '</select>' +
+                    '</td><td>' +
+                    '<select class="form-control push-right" style="box-sizing:content-box;"> ' +
+                    '<option>همه‌ی زیرگروه‌ها</option>' +
+                    '<option selected>مفتول مسی</option>' +
+                    '<option>اسلب مسی</option>' +
+                    '<option>مس کاتدی</option>' +
+                    '<option>اکسید مس</option>' +
+                    '<option>مس کم‌عیار</option>' +
+                    '</select>' +
+                    '</td>' +
+                    '<td>' +
+                    '<select class="form-control push-right" style="box-sizing:content-box;"> ' +
+                    '<option>همه‌ی تولید کنندگان</option>' +
+                    '<option>ایرالکو</option>' +
+                    '<option  selected>صنایع مس ایران</option>' +
+                    '<option>دنیای مس کاشان</option>' +
+                    '<option>صنایع مس کاوه</option>' +
+                    '<option>مس کاران</option>' +
+                    '</select>' +
+                    '</td>' +
+                    '<td><input type="text" value="000" name="border-color"  id ="'+ selectorId + '" class="pick-a-color form-control"></td>'+
+            '</tr></table>';
+            $("#"+selectorId).pickAColor({
+                showSpectrum            : true,
+                showSavedColors         : true,
+                saveColorsPerElement    : false,
+                fadeMenuToggle          : true,
+                showHexInput            : false,
+                showBasicColors         : true,
+                allowBlank              : false,
+                inlineDropdown          : false
+            });
+        }
         $(document).on("click",".deleteMe", function(){
             $(this).closest(".panel-container").remove();
         });
@@ -456,7 +518,7 @@
     <ul class="nav nav-tabs">
         <li style="width: 22%" class="text-center"><a href="http://www.ime.co.ir"><span style="height: 60px;" class="photo"><img alt='Responsive image'style="height: inherit" src="{% static 'img/ime-logo.png' %}"></span></a></li>
         <li style="width: 39%" class="text-center active"><a data-toggle="tab" href="#menu1">اطلاعات جامع بازار</a></li>
-        <li style="width: 39%" class="text-center"><a onclick="get_data_from_server()" data-toggle="tab" href="#menu2">نمودارهای مقایسه‌ای</a></li>
+        <li style="width: 39%" class="text-center"><a onclick="get_data_from_server()" data-toggle="tab" href="#menu2">نمودارها</a></li>
     </ul>
 
     <div class="tab-content">
@@ -466,9 +528,9 @@
                     <div class="panel-heading main-panel-heading" style="background-color: #4250ae">
                         <i class="glyphicon glyphicon-stats"></i><span>&nbsp;&nbsp;بازار داخلی</span>
                     </div>
-                    <div class="panel-body col-lg-12" style="background-color: #afbcf3">
+                    <div class="panel-body col-lg-12 " style="background-color: #afbcf3">
                         <div class="col-lg-6">
-                            <div class="panel">
+                            <div class="panel shadow">
                                 <div class="panel-heading">
                                     <span>حجم معاملات (تناژ)</span>
                                 </div>
@@ -478,7 +540,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="panel">
+                            <div class="panel shadow">
                                 <div class="panel-heading">
                                     <span>ارزش معاملات (میلیون ریال)</span>
                                 </div>
@@ -532,45 +594,47 @@
                             <option>سالانه</option>
 
                         </select>
-                        </div><div class="form-group push-right" style="font-family: 'XB Niloofar'; font-size: x-large;">
-                        <label>منتهی به</label>
+                    </div><div class="form-group push-right" style="font-family: 'XB Niloofar'; font-size: x-large;">
+                    <label>منتهی به</label>
 
-                        <select class="form-control push-right" id = "day" style="box-sizing:content-box;">
-                            <option disabled selected>روز</option>
-                        </select>
-                        <select class="form-control push-right" id = "month" style="box-sizing:content-box;">
-                            <option disabled selected>ماه</option>
+                    <select class="form-control push-right" id = "day" style="box-sizing:content-box;">
+                        <option disabled selected>روز</option>
+                    </select>
+                    <select class="form-control push-right" id = "month" style="box-sizing:content-box;">
+                        <option disabled selected>ماه</option>
 
-                        </select>
-                        <select class="form-control push-right" id="year" style="box-sizing:content-box;">
-                        </select>
-                        <input id="date_input" class="form-control push-right" type="hidden" onchange="set_date()"><button id="date_btn" class="form-control glyphicon glyphicon-calendar" style="margin-right: 0 !important;background-color: transparent; border: none; color: #d6403f; font-size: large"></button>
-                        <script>
-                            Calendar.setup({
-                                inputField: 'date_input',
-                                button: 'date_btn',
-                                ifFormat: '%Y/%m/%d',
-                                dateType: 'jalali',
-                                displayArea: 'displau_area_1'
-                            });
-                        </script>
-                        <label style="font-size: medium !important;" >عرضه</label>
-                        <input type="radio" class="form-control push-right" id="arze" name="type" value="عرضه">
+                    </select>
+                    <select class="form-control push-right" id="year" style="box-sizing:content-box;">
+                    </select>
+                    <input id="date_input" class="form-control push-right" type="hidden" onchange="set_date()"><button id="date_btn" class="form-control glyphicon glyphicon-calendar" style="margin-right: 0 !important;background-color: transparent; border: none; color: #d6403f; font-size: large"></button>
+                    <script>
+                        Calendar.setup({
+                            inputField: 'date_input',
+                            button: 'date_btn',
+                            ifFormat: '%Y/%m/%d',
+                            dateType: 'jalali',
+                            displayArea: 'displau_area_1'
+                        });
+                    </script>
+                    <label style="font-size: medium !important;" >عرضه</label>
+                    <input type="radio" class="form-control push-right" id="arze" name="type" value="عرضه">
                     <label style="font-size: medium !important;">تقاضا</label>
-                        <input type="radio" class="form-control push-right" id="taghaza" name="type" value="تقاضا">
+                    <input type="radio" class="form-control push-right" id="taghaza" name="type" value="تقاضا">
                     <label style="font-size: medium !important;">معامله</label>
-                        <input type="radio" class="form-control push-right" id="moamele" name="type" value="معامله">
+                    <input type="radio" class="form-control push-right" id="moamele" name="type" value="معامله">
                     <label style="font-size: medium !important;">ارزش</label>
-                        <input type="radio" class="form-control push-right" id="arzesh" name="type" value="ارزش">
-                        <button type="button" class="form-control glyphicon glyphicon-plus" style="color: #28ac0b; background-color: transparent; border: none; font-size: x-large" onclick="add_chart()"></button>
-                    </div>
+                    <input type="radio" class="form-control push-right" id="arzesh" name="type" value="ارزش">
+                    <button type="button" class="form-control glyphicon glyphicon-plus" style="color: #28ac0b; background-color: transparent; border: none; font-size: x-large" onclick="add_chart()"></button>
+                </div>
                 </form>
 
             </div>
         </div>
 
+
     </div>
 </div>
-
+<script src="{% static 'js/tinycolor-0.9.15.min.js' %}"></script>
+<script src="{% static 'js/pick-a-color-1.2.3.min.js' %}"></script>
 </body>
 </html>
