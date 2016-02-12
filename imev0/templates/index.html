@@ -403,6 +403,7 @@
 
 
     <script>
+        idGen = 0;
         function add_chart(){
             $('#error').remove();
             var adder = document.getElementById("adder");
@@ -440,12 +441,11 @@
                 var body = document.createElement("div");
                 body.setAttribute("class", "panel-body col-lg-12");
                 body.setAttribute("style", "background-color: #afbcf3; padding-left: 0px; padding-right: 0px");
-                body.innerHTML = '<div class="col-lg-5 container" style="padding-left: 0px !important"><section class="panel "><div class=" shadow col-lg-12 panel-heading white-bg"><span style="float:right; font-size: x-large">داده‌های نمودار</span><span style="padding: 0px; float:left; color:green; font-size:x-large;" onclick="add_selector(); border: none">+</span></div>' +
+                body.innerHTML =
+                        '<div class="col-lg-12 container""> <section class="shadow panel" style="padding-top: 3% !important"><canvas id="NCI-CR08AB-00" height=100" width="500"></canvas>' +
+                        '</div></section></section>' + '<div class="col-lg-12 container" ><section class="panel "><div class=" shadow col-lg-12 panel-heading white-bg"><span style="float:right; font-size: x-large">داده‌های نمودار</span><span style="padding: 0px; float:left; color:green; font-size:x-large;" onclick="add_selector(); border: none">+</span></div>' +
                         ' <div class="col-lg-12 shadow panel-body white-bg" id = "selectors"></div>' +
-                        '</section> </div> ' +
-                        '<div class="col-lg-7 container""> <section class="shadow panel" style="padding-top: 3% !important"><canvas id="NCI-CR08AB-00" height=100" width="500"></canvas>' +
-                        '</div></section></section>';
-                ;
+                        '</section> </div> ';
                 panel.appendChild(body);
 
                 panel_container.appendChild(panel);
@@ -457,7 +457,8 @@
 
         function add_selector() {
             var selector = document.getElementById("selectors");
-            var selectorId = "color"+selector.childElementCount;
+            var selectorId = "color"+idGen;
+            idGen += 1;
             selector.innerHTML += '<table style="border-spacing: 4px;border-collapse: separate;">' +
                     '<tr><td>' +
                     '<select class="form-control push-right" style="box-sizing:content-box;"> ' +
@@ -501,7 +502,9 @@
                     '</select>' +
                     '</td>' +
                     '<td><input type="text" value="000" name="border-color"  id ="'+ selectorId + '" class="pick-a-color form-control"></td>'+
-            '</tr></table>';
+                    '<td><i class="glyphicon glyphicon-eye-open hideTable" style="color:black !important"></i></td>' +
+                    '<td><i class="glyphicon glyphicon-trash deleteTable" style="color:black !important"></i></td>' +
+                    '</tr></table>';
             $("#"+selectorId).pickAColor({
                 showSpectrum            : true,
                 showSavedColors         : true,
@@ -513,8 +516,23 @@
                 inlineDropdown          : false
             });
         }
+
         $(document).on("click",".deleteMe", function(){
             $(this).closest(".panel-container").remove();
+        });
+
+        $(document).on("click",".deleteTable", function(){
+            $(this).closest("table").remove();
+        });
+        $(document).on("click",".hideTable", function(){
+            var eye = this;
+            eye.setAttribute("class", "glyphicon glyphicon-eye-close showTable");
+        });
+
+        $(document).on("click",".showTable", function(){
+            var eye = this;
+            console.log(eye.parentElement.parentElement);
+            eye.setAttribute("class", "glyphicon glyphicon-eye-open hideTable");
         });
     </script>
 
