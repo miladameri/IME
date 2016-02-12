@@ -21,6 +21,6 @@ class Command(BaseCommand):
             f = Transaction(date=persian_date, product=row[1].value, producer=row[2].value,
                             supply=float(row[5].value), demand=float(row[8].value),
                             treatment=float(row[11].value), value_KRials=float(row[16].value),
-                            subgroup = row[18].value, group = row[19].value, main_group = row[20].value)
+                            sub_group=row[18].value, group=row[19].value, main_group=row[20].value)
             f.save()
 
