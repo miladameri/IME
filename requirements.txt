@@ -24,3 +24,4 @@ ZConfig==3.0.4
 zdaemon==4.0.1
 ZODB==4.1.0
 zope.interface==4.1.1
+psycopg2==2.6.1
