@@ -98,8 +98,8 @@ i{
     font-family: "titr";
     src: url(../fonts/xb_titre.eot);
     src: url(../fonts/xb_titre.eot?#iefix) format("embedded-opentype"),
-    url(../../static/fonts/xb_titre.woff) format("woff"),
-    url(../../static/fonts/xb_titre.svg#BYekan) format("svg");
+    url(../fonts/xb_titre.woff) format("woff"),
+    url(../fonts/xb_titre.svg#BYekan) format("svg");
     font-weight: normal;
     font-style: normal;
 }
@@ -107,10 +107,10 @@ i{
 
 @font-face {
     font-family: "XB Niloofar";
-    src: url(../../static/fonts/XBNiloofar.eot);
-    src: url(../../static/fonts/XBNiloofar.eot?#iefix) format("embedded-opentype"),
-    url(../../static/fonts/XBNiloofar.woff) format("woff"),
-    url(../../static/fonts/XBNiloofar.svg#BYekan) format("svg");
+    src: url(../fonts/XBNiloofar.eot);
+    src: url(../fonts/XBNiloofar.eot?#iefix) format("embedded-opentype"),
+    url(../fonts/XBNiloofar.woff) format("woff"),
+    url(../fonts/XBNiloofar.svg#BYekan) format("svg");
     font-weight: normal;
     font-style: normal;
 }
