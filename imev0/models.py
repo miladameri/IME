@@ -1,5 +1,6 @@
+# This Python file uses the following encoding: utf-8
+import os, sys
 from django.db import models
-
 
 class Transaction(models.Model):
     date = models.DateField(null=True)

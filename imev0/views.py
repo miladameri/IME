@@ -1,7 +1,6 @@
 from django.views.generic import TemplateView, View
 from django.http import HttpResponse
 import json
-import jdatetime as jdate
 from openpyxl import load_workbook
 import os
 ONE_WEEK = 1
