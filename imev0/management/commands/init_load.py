@@ -26,7 +26,7 @@ class Command(BaseCommand):
                             producer=Producer.objects.filter(name=row[2].value),
                             supply=float(row[5].value),
                             demand=float(row[8].value),
-                            treatment=float(row[11].value),
+                            trade=float(row[11].value),
                             value_KRials=float(row[16].value),
                             group=Group.objects.filter(name=row[19].value))
             f.save()

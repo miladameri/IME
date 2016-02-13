@@ -34,10 +34,10 @@ class Producer(models.Model):
 
 
 class Transaction(models.Model):
-    date = models.DateField()
-    product = models.ForeignKey(Product)
-    producer = models.ForeignKey(Producer)
-    supply = models.FloatField(default=0)
-    demand = models.FloatField(default=0)
-    value_KRials = models.FloatField(default=0)
-    treatment = models.FloatField(default=0)
+    date = models.DateField(verbose_name='تاریخ')
+    product = models.ForeignKey(Product, verbose_name='محصول')
+    producer = models.ForeignKey(Producer, verbose_name='تولیدکننده')
+    supply = models.FloatField(default=0, verbose_name='عرضه')
+    demand = models.FloatField(default=0, verbose_name='تقاضا')
+    trade = models.FloatField(default=0, verbose_name='معامله')        #moamele
+    value_KRials = models.FloatField(default=0, verbose_name='ارزش(هزارریال)')

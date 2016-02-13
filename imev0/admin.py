@@ -3,9 +3,9 @@ from django.contrib import admin
 # Register your models here.
 from imev0.models import *
 
-class TAdmin(admin.ModelAdmin):
-    list_display = ('date', 'product', 'producer', 'supply')
 
+class TAdmin(admin.ModelAdmin):
+    list_display = ('date', 'product', 'producer', 'supply', 'demand', 'trade', 'value_KRials')
 
 admin.site.register(Transaction, TAdmin)
 
