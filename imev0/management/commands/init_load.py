@@ -20,6 +20,9 @@ class Command(BaseCommand):
                 i += 1
                 continue
             dates = row[0].value.split('/')
+            thisGroup = Group.objects.filter(name=row[19].value)
+            if thisGroup == None:
+
             persian_date = datetime.date(int(dates[0]), int(dates[1]), int(dates[2]))
             f = Transaction(date=persian_date,
                             product=Product.objects.filter(name=row[1].value),
@@ -28,5 +31,5 @@ class Command(BaseCommand):
                             demand=float(row[8].value),
                             trade=float(row[11].value),
                             value_KRials=float(row[16].value),
-                            group=Group.objects.filter(name=row[19].value))
+                            group=thisGroup)
             f.save()

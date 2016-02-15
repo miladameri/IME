@@ -531,7 +531,7 @@
 
         $(document).on("click",".showTable", function(){
             var eye = this;
-            console.log(eye.parentElement.parentElement);
+            console.log("salam ", eye.parentElement.parentElement);
             eye.setAttribute("class", "glyphicon glyphicon-eye-open hideTable");
         });
     </script>
@@ -549,7 +549,7 @@
     <ul class="nav nav-tabs">
         <li style="width: 22%" class="text-center"><a href="https://www.ime.co.ir"><span style="height: 60px;" class="photo"><img alt='Responsive image'style="height: inherit" src="{% static 'img/ime-logo.png' %}"></span></a></li>
         <li style="width: 39%" class="text-center active"><a data-toggle="tab" href="#menu1">اطلاعات جامع بازار</a></li>
-        <li style="width: 39%" class="text-center"><a onclick="get_data_from_server()" data-toggle="tab" href="#menu2">نمودارها</a></li>
+        <li style="width: 39%" class="text-center"><a  data-toggle="tab" href="#menu2">نمودارها</a></li>
     </ul>
 
     <div class="tab-content">
@@ -561,7 +561,7 @@
                     </div>
                     <div class="panel-body col-lg-12 " style="background-color: #afbcf3">
                         <div class="col-lg-6">
-                            <div class="panel shadow">
+                            <div class="panel mshadow">
                                 <div class="panel-heading">
                                     <span>حجم معاملات (تناژ)</span>
                                 </div>
@@ -571,7 +571,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="panel shadow">
+                            <div class="panel mshadow">
                                 <div class="panel-heading">
                                     <span>ارزش معاملات (میلیون ریال)</span>
                                 </div>
