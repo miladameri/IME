@@ -9,12 +9,20 @@ class MainGroup(models.Model):
         return self.name
 
 
-class Group(models.Model):
+class SubGroup(models.Model):
     name = models.CharField(max_length=255, default="")
     mainGroup = models.ForeignKey(MainGroup)
 
     def __str__(self):
         return self.name + ' در ' + self.mainGroup.__str__()
+
+
+class Group(models.Model):
+    name = models.CharField(max_length=255, default="")
+    subGroup = models.ForeignKey(SubGroup, null=True)
+
+    def __str__(self):
+        return self.name + ' در ' + self.subGroup.__str__()
 
 
 class Product(models.Model):
@@ -37,7 +45,7 @@ class Transaction(models.Model):
     date = models.DateField(verbose_name='تاریخ')
     product = models.ForeignKey(Product, verbose_name='محصول')
     producer = models.ForeignKey(Producer, verbose_name='تولیدکننده')
-    supply = models.FloatField(default=0, verbose_name='عرضه')
-    demand = models.FloatField(default=0, verbose_name='تقاضا')
-    trade = models.FloatField(default=0, verbose_name='معامله')        #moamele
-    value_KRials = models.FloatField(default=0, verbose_name='ارزش(هزارریال)')
+    supply = models.FloatField(default=-1, verbose_name='عرضه')
+    demand = models.FloatField(default=-1, verbose_name='تقاضا')
+    trade = models.FloatField(default=-1, verbose_name='معامله')        #moamele
+    value_KRials = models.FloatField(default=-1, verbose_name='ارزش(هزارریال)')
