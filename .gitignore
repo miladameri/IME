@@ -2,6 +2,7 @@
 .DS_Store?
 .Trashes
 .idea
+*.pyc
 imev0/static/test2.xlsx
 *__pycache__
 db.sqlite3
