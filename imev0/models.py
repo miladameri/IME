@@ -49,3 +49,5 @@ class Transaction(models.Model):
     demand = models.FloatField(default=-1, verbose_name='تقاضا')
     trade = models.FloatField(default=-1, verbose_name='معامله')        #moamele
     value_KRials = models.FloatField(default=-1, verbose_name='ارزش(هزارریال)')
+    def __str__(self):
+        return str(self.date) + ", " + str(self.product) + ", " + str(self.supply)

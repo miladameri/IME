@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^datas$', Datas.as_view(), name='getDatas'),
     url(r'^test$', Test.as_view(), name='test'),
 
+
 ]

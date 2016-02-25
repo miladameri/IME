@@ -5,9 +5,9 @@ from imev0.models import *
 
 
 class TAdmin(admin.ModelAdmin):
-    list_display = ('persian_date', 'product', 'producer', 'supply', 'demand', 'trade', 'value_KRials')
+    list_display = ('date', 'product', 'producer', 'supply', 'demand', 'trade', 'value_KRials')
 
-    def persian_date(self, args*):
+    def persian_date(self, obj):
         return "sag"
 
 admin.site.register(Transaction, TAdmin)

@@ -16,7 +16,7 @@ class Command(BaseCommand):
         ws = wb.active  # ws is now an IterableWorksheet
         i = 0
         for row in ws:
-            if i == 0:
+            if i == 0 or row[0] is None:
                 i += 1
                 continue
             dates = row[0].value.split('/')
