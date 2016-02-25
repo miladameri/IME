@@ -5,7 +5,8 @@ import json
 import jdatetime as jdate
 from openpyxl import load_workbook
 from imev0.models import *
-import os
+from django.db.models import Sum
+
 ONE_WEEK = 1
 THREE_WEEK = 3
 THREE_MONTHS = 12
@@ -110,7 +111,39 @@ class Datas(View):
 
 
 
-    def extract_chart(self, symbol, chart_name, end_date, time_slot):
+    def get(self, request, *args, **kwargs):
+        main_group = request.GET['main_group']
+        group = request.GET['group']
+        product = request.GET['product']
+        producer = request.GET['producer']
+        chart_name = request.GET['type']
+        end_date = request.GET['end_date']
+        time_slot = request.GET['time_slot']
+        sub_group = request.GET['sub_group']
+        data = self.extract_chart(main_group, sub_group, group, product, producer, chart_name, end_date, time_slot)
+        output = {'data': data}
+        return HttpResponse(json.dumps(output, ensure_ascii=False))
+
+
+    def extract_chart(self, main_group, sub_group, group, product, producer, chart_name, end_date, time_slot):
+
+        def filter_products(self):
+
+            if producer != 'all' :
+                transactions = Transaction.objects.filter(producer__name = producer)
+            if main_group != 'all' :
+                transactions = transactions.filter(product__group__subGroup__mainGroup__name = main_group)
+            if sub_group != 'all' :
+                transactions = transactions.filter(product__group__subGroup__name = sub_group)
+
+            if group != 'all' :
+                transactions = transactions.filter(product__group__name = group)
+
+            if product != 'all' :
+                transactions = transactions.filter(product__name = product)
+
+            return transactions
+
         # the list representing the labels of a line chart
         x = []
         # the list representing the data of a line chart
@@ -118,21 +151,23 @@ class Datas(View):
         # the return value (a tuple)
         d = None
 
+        # Now we have the list of all transactions regarding that product
+        all_transactions = filter_products()
+
+
         if time_slot == ONE_WEEK or time_slot == THREE_WEEK:
         # Considering a week has 7 days, we extract those rows from our database
         # that match the given symbol and time duration given as inputs to the method
             start_date = end_date - jdate.timedelta(days = time_slot*7)
             date = start_date
             while date <= end_date:
-                t = 0
-                for row in self.datas:
-                    if row['date'] == date and symbol == row['symbol']:
-                        y.append(row[chart_name])
-                        t = 1
-                        break
-                x.append(str(date))
-                if t == 0:
-                    y.append(0)
+                #TODO what if the result was null? what would it return?
+                sum_value = all_transactions.filter(date = date).aggregate(Sum(chart_name))
+
+
+                if sum_value != 0: #we have data for this particular day!
+                    y.append(sum_value)
+                    x.append(str(date))
                 date += jdate.timedelta(days = 1)
             d = (x, y)
 
@@ -142,49 +177,27 @@ class Datas(View):
             date = start_date
             while date <= end_date:
                 sum_value = 0
-                for row in self.datas:
-                    if symbol == row['symbol'] and row['date'] > date and row['date'] <= date + jdate.timedelta(days = 7):
-                        sum_value = sum_value + row[chart_name]
 
-                x.append(str(date + jdate.timedelta(days = 7)))
-                y.append(sum_value)
+                transactions = all_transactions.filter(date__gt =  date)
+                sum_value = transactions.filter(date__lte =  date + jdate.timedelta(days = 7)).aggregate(Sum(chart_name))
+                if sum_value != 0:
+                    x.append(str(date + jdate.timedelta(days = 7)))
+                    y.append(sum_value)
                 date += jdate.timedelta(days = 7)
             d = (x, y)
 
         elif time_slot == ONE_YEAR:
-            start_date = jdate.date(end_date.year - 1, end_date.month, end_date.day)
+            start_date = end_date - jdate.timedelta(days = 365)
             # print(str(start_date)+ 'تاریخ شروع ')
             # print(str(end_date) + 'تاریخ پایان ')
             date = start_date
             while date <= end_date:
                 # print(str(date) + 'curr date')
-                sum_value = 0
-                for row in self.datas:
-                    if symbol == row['symbol'] and row['date'].year == date.year and row['date'].month == date.month:
-                        sum_value = sum_value + row[chart_name]
-                x.append(date.j_months_fa[date.month - 1])
-                y.append(sum_value)
+                sum_value = all_transactions.filter(date__year = date.year).filter(date__month = date.month).aggregate(Sum(chart_name))
+
+                if sum_value != 0:
+                    x.append(date.j_months_fa[date.month - 1])
+                    y.append(sum_value)
                 date += jdate.timedelta(days = 30)
             d = (x, y)
         return d
-
-    # for now product_group is set "Copper or مس" as default
-    def get_product_producer(self, product_group, end_date, time_slot):
-
-        # a dictionary containing one dictionary per each symbol we are given
-        # regarding a specific group of products (eg. Copper).
-        result = {}
-
-        # each group of products has a specific symbol for each product produced by a company
-        # there is a dictionary (charts_per_symbol) for every symbol, containing tuples of lists
-        # for each chart. (There are currently 3 charts, supply, trade and demand)
-        # self.product_producer is a list of symbols (for now it contains the symbols regarding the copper group)
-        for item in self.product_producer:
-            charts_per_symbol = {}
-
-            charts_per_symbol['supply'] = self.extract_chart(item, 'supply', end_date, time_slot)
-            charts_per_symbol['demand'] = self.extract_chart(item, 'final_demand', end_date, time_slot)
-            charts_per_symbol['trade'] = self.extract_chart(item, 'traded_amount', end_date, time_slot)
-
-            result[item] = charts_per_symbol
-        return result
