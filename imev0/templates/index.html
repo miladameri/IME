@@ -1,9 +1,9 @@
-{% load staticfiles %}
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
 <head>
 
-    <meta charset="utf-8">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Mosaddek">
@@ -459,11 +459,13 @@
             var selector = document.getElementById("selectors");
             var selectorId = "color"+idGen;
             idGen += 1;
+            mainOptions = "";
+
             selector.innerHTML += '<table style="border-spacing: 4px;border-collapse: separate;">' +
                     '<tr><td>' +
                     '<select class="form-control push-right" style="box-sizing:content-box;"> ' +
                     '<option selected>همه‌ی گروه‌های اصلی</option>' +
-                    '<option selected>صنعتی</option>' +
+                    mainOptions +
                     '</select>' +
                     '</td>' +
                     '<td>' +
