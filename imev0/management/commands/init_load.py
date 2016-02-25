@@ -54,6 +54,8 @@ class Command(BaseCommand):
             else:
                 thisProducer = Producer.objects.filter(name=row[2].value)[0]
 
+            if thisProduct not in thisProducer.products.all():
+                thisProducer.products.add(thisProduct)
             persian_date = datetime.date(int(dates[0]), int(dates[1]), int(dates[2]))
 
             f = Transaction(date=persian_date,

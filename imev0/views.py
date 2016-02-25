@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 from django.views.generic import TemplateView, View
 from django.http import HttpResponse
 import json
 import jdatetime as jdate
 from openpyxl import load_workbook
+from imev0.models import *
 import os
 ONE_WEEK = 1
 THREE_WEEK = 3
@@ -24,7 +26,11 @@ class Index(TemplateView):
     #template_name = 'test.html'
 
     def get_context_data(self, **kwargs):
-        context = super(Index, self).get_context_data(**kwargs)
+        mains = []
+        for x in MainGroup.objects.all():
+            mains.append(str(x.name))
+        context = {'datas': [1,2]}
+        print(context)
         return context
 
 
@@ -46,11 +52,9 @@ class Datas(View):
             persian_date = jdate.date(1394, 8, 1)
         else:
             persian_date = jdate.date(int(dates[0]), int(dates[1]), int(dates[2]))
-        print("dates:" , persian_date)
         result = self.get_product_producer('copper',persian_date, time_slot )
         datas = result
         output = {'datas': datas}
-        print("datas",  datas)
         return HttpResponse(json.dumps(output))
 
 

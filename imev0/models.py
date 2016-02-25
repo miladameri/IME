@@ -14,7 +14,7 @@ class SubGroup(models.Model):
     mainGroup = models.ForeignKey(MainGroup)
 
     def __str__(self):
-        return self.name + ' در ' + self.mainGroup.__str__()
+        return self.name + '  -  '+ self.mainGroup.__str__()
 
 
 class Group(models.Model):
@@ -22,7 +22,7 @@ class Group(models.Model):
     subGroup = models.ForeignKey(SubGroup, null=True)
 
     def __str__(self):
-        return self.name + ' در ' + self.subGroup.__str__()
+        return self.name + '  -  ' + self.subGroup.__str__()
 
 
 class Product(models.Model):
@@ -30,7 +30,7 @@ class Product(models.Model):
     group = models.ForeignKey(Group)
 
     def __str__(self):
-        return self.name + ' در ' + self.group.__str__()
+        return self.name + '  -  ' + self.group.__str__()
 
 
 class Producer(models.Model):
