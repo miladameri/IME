@@ -3,6 +3,8 @@
 .Trashes
 .idea
 *.pyc
+IME/__pycache__
 imev0/static/test2.xlsx
-*__pycache__
 db.sqlite3
+imev0/migrations
+mydatabase

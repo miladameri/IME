@@ -179,27 +179,29 @@ class Datas(View):
         return persian_date
 
     def get(self, request, *args, **kwargs):
-        print("here ", request.GET)
+        #print("here ", request.GET)
+        print('here')
         main_group = request.GET['main_group']
-        print(main_group)
+        #print(main_group)
         group = request.GET['group']
-        print(group)
+        #print(group)
         product = request.GET['product']
-        print(product)
+        #print(product)
         producer = request.GET['producer']
-        print(producer)
+        #print(producer)
         chart_name = request.GET['type']
-        print(chart_name)
+        #print(chart_name)
         end_date = request.GET['end_date']
-        print(end_date)
+        #print(end_date)
         end_date = self.string_to_jdate(end_date)
-        print(end_date)
+        #print(end_date)
         time_slot = (int)(request.GET['time_slot'])
-        print(time_slot)
+        #print(time_slot)
         sub_group = request.GET['sub_group']
-        print(sub_group)
+        #print(sub_group)
         data = self.extract_chart(main_group, sub_group, group, product, producer, chart_name, end_date, time_slot)
         output = {'data': data}
+        print(output)
         return HttpResponse(json.dumps(output, ensure_ascii=False))
 
 
@@ -307,3 +309,23 @@ class Datas(View):
 
             d = (x, y)
         return d
+
+
+class MainGroupSums(View):
+    def get(self, request, *args, **kwargs):
+        print('here')
+        main_group = request.GET['main_group']
+        group = request.GET['group']
+        product = request.GET['product']
+        producer = request.GET['producer']
+        chart_name = request.GET['type']
+        end_date = request.GET['end_date']
+        end_date = Datas.string_to_jdate(end_date)
+        time_slot = (int)(request.GET['time_slot'])
+        sub_group = request.GET['sub_group']
+        data = Datas.extract_chart(main_group, sub_group, group, product, producer, chart_name, end_date, time_slot)
+        output = {'data': data}
+        print(output)
+        return HttpResponse(json.dumps(output, ensure_ascii=False))
+
+
