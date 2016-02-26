@@ -378,68 +378,128 @@
             return false;
         }
 
+        function getGroupOptions(t) {
+            console.log("here");
+            var options = '<option selected value="all">همه‌ی زیرگروه‌ها</option>' ;
+            $.ajax({
+                url: " {% url 'getGroupOptions' %}",
+                dataType: "json",
+                data: {
+                    'sub': t.value
+                },
+                type: "GET",
+                success: function (response) {
+                    var datas = response['datas'];
+                    for (var i = 0;  i < datas.length; i++) {
+                        options += '<option value="'+ datas[i] +'">' + datas[i] + '</option>';
+                    }
+                    console.log(t.parentElement.nextSibling.firstChild);
+                    t.parentElement.nextSibling.firstChild.innerHTML = options;
+                },
+                complete: function () {
+                },
+                error: function (xhr, textStatus, thrownError) {
+                    alert("error doing something");
+                }
+            });
+
+        }
+
+        function getSubOptions(t) {
+            var options = '<option selected value="all">همه‌ی گروه‌ها</option>' ;
+            $.ajax({
+                url: " {% url 'getSubOptions' %}",
+                dataType: "json",
+                data: {
+                    'main': t.value
+                },
+                type: "GET",
+                success: function (response) {
+                    var datas = response['datas'];
+                    for (var i = 0;  i < datas.length; i++) {
+                        options += '<option value="'+ datas[i] +'">' + datas[i] + '</option>';
+                    }
+                    console.log(t.parentElement.nextSibling.firstChild);
+                    t.parentElement.nextSibling.firstChild.innerHTML = options;
+                },
+                complete: function () {
+                },
+                error: function (xhr, textStatus, thrownError) {
+                    alert("error doing something");
+                }
+            });
+
+        }
+
         function add_selector() {
             var selector = document.getElementById("selectors");
             var selectorId = "color" + idGen;
             idGen += 1;
-            mainOptions = "";
+            var mainOptions = "";
+            $.ajax({
+                url: " {% url 'getMainOptions' %}",
+                dataType: "json",
+                data: {
 
-            selector.innerHTML += '<table style="border-spacing: 4px;border-collapse: separate;">' +
-                    '<tr><td>' +
-                    '<select class="form-control push-right" style="box-sizing:content-box;"> ' +
-                    '<option selected>همه‌ی گروه‌های اصلی</option>' +
-                    mainOptions +
-                    '</select>' +
-                    '</td>' +
-                    '<td>' +
-                    '<select class="form-control push-right"style="box-sizing:content-box; "> ' +
-                    '<option>همه‌ی گروه‌ها</option>' +
-                    '<option>آلومینیوم</option>' +
-                    '<option selected>مس</option>' +
-                    '<option>فولاد</option>' +
-                    '<option>طلا</option>' +
-                    '<option>نیکل</option>' +
-                    '<option>روی</option>' +
-                    '<option>کک</option>' +
-                    '<option>سیمان</option>' +
-                    '<option>سنگ‌آهن</option>' +
-                    '<option>کنسانتره</option>' +
-                    '<option>کنسانتره مولبیدن</option>' +
-                    '</select>' +
-                    '</td><td>' +
-                    '<select class="form-control push-right" style="box-sizing:content-box;"> ' +
-                    '<option>همه‌ی زیرگروه‌ها</option>' +
-                    '<option selected>مفتول مسی</option>' +
-                    '<option>اسلب مسی</option>' +
-                    '<option>مس کاتدی</option>' +
-                    '<option>اکسید مس</option>' +
-                    '<option>مس کم‌عیار</option>' +
-                    '</select>' +
-                    '</td>' +
-                    '<td>' +
-                    '<select class="form-control push-right" style="box-sizing:content-box;"> ' +
-                    '<option>همه‌ی تولید کنندگان</option>' +
-                    '<option>ایرالکو</option>' +
-                    '<option  selected>صنایع مس ایران</option>' +
-                    '<option>دنیای مس کاشان</option>' +
-                    '<option>صنایع مس کاوه</option>' +
-                    '<option>مس کاران</option>' +
-                    '</select>' +
-                    '</td>' +
-                    '<td><input type="text" value="000" name="border-color"  id ="' + selectorId + '" class="pick-a-color form-control"></td>' +
-                    '<td><i class="glyphicon glyphicon-eye-open hideTable" style="color:black !important"></i></td>' +
-                    '<td><i class="glyphicon glyphicon-trash deleteTable" style="color:black !important"></i></td>' +
-                    '</tr></table>';
-            $("#" + selectorId).pickAColor({
-                showSpectrum: true,
-                showSavedColors: true,
-                saveColorsPerElement: false,
-                fadeMenuToggle: true,
-                showHexInput: false,
-                showBasicColors: true,
-                allowBlank: false,
-                inlineDropdown: false
+                },
+                type: "GET",
+                success: function (response) {
+
+                    datas = response['datas'];
+
+                    for (var i = 0; i < datas.length; i++) {
+                        console.log(datas);
+                        mainOptions += '<option value="'+ datas[i] +'">' + datas[i] + '</option>';
+                        console.log(mainOptions);
+                    }
+                    selector.innerHTML += '<table style="border-spacing: 4px;border-collapse: separate;">' +
+                            '<tr><td>' +
+                            '<select onchange=getSubOptions(this) class="main_selector form-control push-right" style="box-sizing:content-box;"> ' +
+                            '<option selected value="all">همه‌ی گروه‌های اصلی</option>' +
+                            mainOptions +
+                            '</select>' +
+                            '</td>' +
+                            '<td>' +
+                            '<select onchange=getGroupOptions(this) class="sub_selector form-control push-right"style="box-sizing:content-box; "> ' +
+                            '<option selected value="all">همه‌ی گروه‌ها</option>' +
+                            '</select>' +
+                            '</td><td>' +
+                            '<select class="group_selector form-control push-right" style="box-sizing:content-box;"> ' +
+                            '<option selected value="all">همه‌ی زیرگروه‌ها</option>' +
+                            '</select>' +
+                            '</td><td>' +
+                            '<select class="product_selector form-control push-right" style="box-sizing:content-box;"> ' +
+                            '<option selected value="all">همه‌ی کالا‌ها</option>' +
+                            '</select>' +
+                            '</td>' +
+                            '<td>' +
+                            '<select class="producer_selector form-control push-right" style="box-sizing:content-box;"> ' +
+                            '<option selected value="all">همه‌ی تولید کنندگان</option>' +
+                            '</select>' +
+                            '</td>' +
+                            '<td><input type="text" value="000" name="border-color"  id ="' + selectorId + '" class="pick-a-color form-control"></td>' +
+                            '<td><i class="glyphicon glyphicon-eye-open hideTable" style="color:black !important"></i></td>' +
+                            '<td><i class="glyphicon glyphicon-trash deleteTable" style="color:black !important"></i></td>' +
+                            '</tr></table>';
+                    $("#" + selectorId).pickAColor({
+                        showSpectrum: true,
+                        showSavedColors: true,
+                        saveColorsPerElement: false,
+                        fadeMenuToggle: true,
+                        showHexInput: false,
+                        showBasicColors: true,
+                        allowBlank: false,
+                        inlineDropdown: false
+                    });
+
+                },
+                complete: function () {
+                },
+                error: function (xhr, textStatus, thrownError) {
+                    alert("error doing something");
+                }
             });
+
         }
 
         $(document).on("click", ".deleteMe", function () {

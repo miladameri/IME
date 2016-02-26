@@ -300,6 +300,7 @@ class Datas(View):
 
 
 class MainGroupSums(View):
+
     def get(self, request, *args, **kwargs):
         print('here')
         main_group = request.GET['main_group']
@@ -317,3 +318,43 @@ class MainGroupSums(View):
         return HttpResponse(json.dumps(output, ensure_ascii=False))
 
 
+class MainOptions(View):
+
+    def get(self, request, *args, **kwargs):
+        allMains = MainGroup.objects.all()
+        optionsList = []
+        for option in allMains:
+            optionsList.append(option.name)
+        output = {'datas': optionsList}
+        return HttpResponse(json.dumps(output, ensure_ascii=False))
+
+
+class SubOptions(View):
+
+    def get(self, request, *args, **kwargs):
+
+        mainName = request.GET['main']
+        if mainName == "all":
+           return HttpResponse(json.dumps({'datas': []}, ensure_ascii=False))
+
+        all = MainGroup.objects.filter(name=mainName)[0].subgroup_set.all()
+        optionsList = []
+        for option in all:
+            optionsList.append(option.name)
+        output = {'datas': optionsList}
+        return HttpResponse(json.dumps(output, ensure_ascii=False))
+
+
+class GroupOptions(View):
+
+    def get(self, request, *args, **kwargs):
+        subName = request.GET['sub']
+        if subName == "all":
+           return HttpResponse(json.dumps({'datas': []}, ensure_ascii=False))
+        all = SubGroup.objects.filter(name=subName)[0].group_set.all()
+        optionsList = []
+
+        for option in all:
+            optionsList.append(option.name)
+        output = {'datas': optionsList}
+        return HttpResponse(json.dumps(output, ensure_ascii=False))
