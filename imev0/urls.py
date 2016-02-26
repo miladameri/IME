@@ -7,7 +7,7 @@ urlpatterns = [
     url(r'^$', Index.as_view(), name='index'),
     url(r'^datas$', Datas.as_view(), name='getDatas'),
     url(r'^test$', Test.as_view(), name='test'),
-    url(r'^maingourp$', MainGroupSums.as_view(), name='getGroups'),
+    url(r'^maingroup$', MainGroupSums.as_view(), name='getGroups'),
 
 
 ]

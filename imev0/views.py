@@ -301,19 +301,90 @@ class Datas(View):
 
 class MainGroupSums(View):
     def get(self, request, *args, **kwargs):
-        print('here')
-        main_group = request.GET['main_group']
-        group = request.GET['group']
-        product = request.GET['product']
-        producer = request.GET['producer']
+        output = {}
+
         chart_name = request.GET['type']
         end_date = request.GET['end_date']
-        end_date = Datas.string_to_jdate(end_date)
+        end_date = Datas.string_to_jdate(self,end_date)
+
         time_slot = (int)(request.GET['time_slot'])
-        sub_group = request.GET['sub_group']
-        data = Datas.extract_chart(main_group, sub_group, group, product, producer, chart_name, end_date, time_slot)
-        output = {'data': data}
-        print(output)
+        main_groups = MainGroup.objects.all()
+        for item in main_groups:
+            trans = Transaction.objects.filter(product__group__subGroup__mainGroup__name = item)
+            sum = self.extract_datas(time_slot,end_date,trans,chart_name)
+            output[item] = sum
+            print(sum)
+        print('again in here')
         return HttpResponse(json.dumps(output, ensure_ascii=False))
 
 
+
+    def extract_datas(self,time_slot,end_date,all_transactions,chart_name):
+        x =[]
+        y =[]
+        sum = 0
+        if time_slot == ONE_WEEK or time_slot == THREE_WEEK:
+        # Considering a week has 7 days, we extract those rows from our database
+        # that match the given symbol and time duration given as inputs to the method
+            start_date = end_date - timedelta(days = time_slot*7) + timedelta(days = 1)
+            date = start_date
+            print(end_date)
+            while end_date.__ge__(date):
+                print(date)
+                #TODO what if the result was null? what would it return?
+                myDate = datetime.date(date.year, date.month, date.day)
+                sum_value = all_transactions.filter(date = myDate).aggregate(Sum(chart_name))[chart_name+'__sum']
+
+
+                if sum_value is not None and sum_value > 0: #we have data for this particular day!
+                    y.append(sum_value)
+                    x.append(str(date))
+                date += timedelta(days = 1)
+            d = (x, y)
+
+
+        elif time_slot == THREE_MONTHS:
+            print("aqa jan three monthse dige, chera shak dari")
+            end_date = Datas.set_to_wednesday(self,end_date)
+            print(end_date)
+            start_date = end_date - timedelta(days=12*7)
+            print(start_date)
+            date = start_date
+            while date <= end_date:
+                print(date.day , "   " , date.month)
+                myDate = datetime.date(date.year, date.month, date.day)
+                transactions = all_transactions.filter(date__gt = myDate)
+
+                sum_value = transactions.filter(date__lte =  (myDate + timedelta(days=7))).aggregate(Sum(chart_name))[chart_name+'__sum']
+                # debug = transactions.filter(date__lte =  (myDate + timedelta(days=7))).order_by('date', 'product__name')
+                # for t in debug:
+                #     print(t)
+                # print(sum_value)
+                if sum_value is not None and sum_value > 0:
+                    x.append(str(date + timedelta(days = 7)))
+                    y.append(sum_value)
+                date += timedelta(days = 7)
+            d = (x, y)
+
+        elif time_slot == ONE_YEAR:
+            start_date = end_date - timedelta(days = 365)
+            # print(str(start_date)+ 'تاریخ شروع ')
+            # print(str(end_date) + 'تاریخ پایان ')
+            date = start_date
+            myDate = datetime.date(date.year, date.month, date.day)
+
+            while date <= end_date:
+                # print(str(date) + 'curr date')
+                sum_value = all_transactions.filter(date__year = myDate.year).filter(date__month = myDate.month).aggregate(Sum(chart_name))[chart_name+'__sum']
+
+                if sum_value is not None and sum_value >  0:
+                    x.append(date.j_months_fa[date.month - 1])
+                    y.append(sum_value)
+                date += timedelta(days = 30)
+            d = (x, y)
+
+
+        print('pfff')
+        for item in y:
+            sum = sum + item
+        return sum

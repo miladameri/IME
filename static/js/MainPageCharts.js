@@ -1,3 +1,4 @@
+
 function initChartHajm(data1, data2) {
     var data = [
         {
@@ -80,14 +81,9 @@ $(document).ready(function () {
 
     console.log("in my js")
     $.ajax({
-        url: " {% url 'getDatas' %}",
+        url: "/maingroup",
         dataType: "json",
         data: {
-            "main_group": "?????",
-            "sub_group": "all",
-            "group": "all",
-            "product": "all",
-            "producer": "all",
             "time_slot": 12,
             "type": "trade",
             "end_date": "1394/08/26"
@@ -100,7 +96,6 @@ $(document).ready(function () {
             for (var i = 0; i < rawdata.length; i++) {
                 sum += rawdata[i];
             }
-            data_sanati = sum;
         },
         complete: function () {
         },
