@@ -123,45 +123,45 @@ class Datas(View):
     #     return HttpResponse(json.dumps(output))
 
 
-    def initialize(self):
-        wb = load_workbook(filename='imev0/test2.xlsx', read_only=True)
-        ws = wb.active  # ws is now an IterableWorksheet
-        for row in ws:
-            d = {}
-
-            if row[0].value == 'تاریخ':
-                continue
-            dates = row[0].value.split('/')
-            persian_date = jdate.date(int(dates[0]), int(dates[1]), int(dates[2]))
-
-            d['date'] = persian_date
-            d['name'] = row[1].value
-            d['producer'] = row[2].value
-            d['symbol'] = row[3].value
-            d['contract_type'] = row[4].value
-            d['supply'] = float(row[5].value)
-            d['base_price'] = row[6].value
-            d['suppliers_offer'] = row[7].value
-            d['final_demand'] = row[8].value
-            d['payan_sabz'] = row[9].value
-            d['highest_demand_price'] = row[10].value
-            d['traded_amount'] = row[11].value
-            d['least_traded_price_rials'] = row[12].value
-            d['Average_traded_price_rials'] = row[13].value
-            d['Average_traded_price_origcurrency'] = row[14].value
-            d['highest_traded_price_rials'] = row[15].value
-            d['value_KRials'] = row[16].value
-            d['delivery_date'] = row[17].value
-            d['subgroup'] = row[18].value
-            d['group'] = row[19].value
-            d['main_group'] = row[20].value
-            d['details'] = row[21].value
-            d['supplier'] = row[22].value
-            d['method_of_supply'] = row[23].value
-            d['supply_code'] = row[24].value
-            d['supply_type'] = row[25].value
-
-            self.datas.append(d)
+    # def initialize(self):
+    #     wb = load_workbook(filename='imev0/test2.xlsx', read_only=True)
+    #     ws = wb.active  # ws is now an IterableWorksheet
+    #     for row in ws:
+    #         d = {}
+    #
+    #         if row[0].value == 'تاریخ':
+    #             continue
+    #         dates = row[0].value.split('/')
+    #         persian_date = jdate.date(int(dates[0]), int(dates[1]), int(dates[2]))
+    #
+    #         d['date'] = persian_date
+    #         d['name'] = row[1].value
+    #         d['producer'] = row[2].value
+    #         d['symbol'] = row[3].value
+    #         d['contract_type'] = row[4].value
+    #         d['supply'] = float(row[5].value)
+    #         d['base_price'] = row[6].value
+    #         d['suppliers_offer'] = row[7].value
+    #         d['final_demand'] = row[8].value
+    #         d['payan_sabz'] = row[9].value
+    #         d['highest_demand_price'] = row[10].value
+    #         d['traded_amount'] = row[11].value
+    #         d['least_traded_price_rials'] = row[12].value
+    #         d['Average_traded_price_rials'] = row[13].value
+    #         d['Average_traded_price_origcurrency'] = row[14].value
+    #         d['highest_traded_price_rials'] = row[15].value
+    #         d['value_KRials'] = row[16].value
+    #         d['delivery_date'] = row[17].value
+    #         d['subgroup'] = row[18].value
+    #         d['group'] = row[19].value
+    #         d['main_group'] = row[20].value
+    #         d['details'] = row[21].value
+    #         d['supplier'] = row[22].value
+    #         d['method_of_supply'] = row[23].value
+    #         d['supply_code'] = row[24].value
+    #         d['supply_type'] = row[25].value
+    #
+    #         self.datas.append(d)
 
     def set_to_wednesday(self, date):
 
@@ -224,6 +224,14 @@ class Datas(View):
 
             return trans
 
+        def add_month(date):
+            if date.month == 12:
+                new_date = jdate.date(date.year + 1, 1, date.day)
+            else:
+                new_date = jdate.date(date.year, date.month + 1, date.day)
+
+            return new_date
+
 
 
 
@@ -258,8 +266,99 @@ class Datas(View):
 
 
         elif time_slot == THREE_MONTHS:
-            print("aqa jan three monthse dige, chera shak dari")
             end_date = self.set_to_wednesday(end_date)
+            start_date = end_date - timedelta(days=12*7)
+            date = start_date
+            while end_date.__ge__(date):
+                myDate = datetime.date(date.year, date.month, date.day)
+                transactions = all_transactions.filter(date__gt = myDate)
+
+                sum_value = transactions.filter(date__lte =  (myDate + timedelta(days=7))).aggregate(Sum(chart_name))[chart_name+'__sum']
+                # debug = transactions.filter(date__lte =  (myDate + timedelta(days=7))).order_by('date', 'product__name')
+                # for t in debug:
+                #     print(t)
+                # print(sum_value)
+                if sum_value is not None and sum_value > 0:
+                    x.append(str(date + timedelta(days = 7)))
+                    y.append(sum_value)
+                date += timedelta(days = 7)
+            d = (x, y)
+
+        #we only need the data of transactions up to end_date and no more!
+        elif time_slot == ONE_YEAR:
+            #seting start_date to a year before end_date. if it was the 30th day of the 12th month then set it to the
+            #29th day of 12th month of the year before.
+            if end_date.day == 30 and end_date.month == 12:
+                end_date = jdate.date(end_date.year, end_date.month, end_date.day-1)
+
+
+            start_date = jdate.date(end_date.year-1, end_date.month, end_date.day)
+            date = start_date
+
+            while end_date.__ge__(date):
+                myDate = datetime.date(date.year, date.month, date.day)
+                #returns all the transactions of the same month and the same year and of course that are also before the end date
+                sum_value = all_transactions.filter(date__year = myDate.year, date__month = myDate.month, date__lte = myDate).aggregate(Sum(chart_name))[chart_name+'__sum']
+
+                if sum_value is not None and sum_value >  0:
+                    label =str(date.j_months_fa[date.month - 1]) + ' ' + str(date.year)
+                    x.append(label  )
+                    y.append(sum_value)
+                date = add_month(date)
+
+
+            d = (x, y)
+        return d
+
+
+class MainGroupSums(View):
+    def get(self, request, *args, **kwargs):
+        output = {}
+
+        chart_name = request.GET['type']
+        end_date = request.GET['end_date']
+        end_date = Datas.string_to_jdate(self,end_date)
+
+        time_slot = (int)(request.GET['time_slot'])
+        main_groups = MainGroup.objects.all()
+        for item in main_groups:
+            trans = Transaction.objects.filter(product__group__subGroup__mainGroup__name = item)
+            sum = self.extract_datas(time_slot,end_date,trans,chart_name)
+            output[item.name] = sum
+            print(sum)
+        print('again in here')
+        print(output)
+        return HttpResponse(json.dumps(output, ensure_ascii=False))
+
+
+
+    def extract_datas(self,time_slot,end_date,all_transactions,chart_name):
+        x =[]
+        y =[]
+        sum = 0
+        if time_slot == ONE_WEEK or time_slot == THREE_WEEK:
+        # Considering a week has 7 days, we extract those rows from our database
+        # that match the given symbol and time duration given as inputs to the method
+            start_date = end_date - timedelta(days = time_slot*7) + timedelta(days = 1)
+            date = start_date
+            print(end_date)
+            while end_date.__ge__(date):
+                print(date)
+                #TODO what if the result was null? what would it return?
+                myDate = datetime.date(date.year, date.month, date.day)
+                sum_value = all_transactions.filter(date = myDate).aggregate(Sum(chart_name))[chart_name+'__sum']
+
+
+                if sum_value is not None and sum_value > 0: #we have data for this particular day!
+                    y.append(sum_value)
+                    x.append(str(date))
+                date += timedelta(days = 1)
+            d = (x, y)
+
+
+        elif time_slot == THREE_MONTHS:
+            print("aqa jan three monthse dige, chera shak dari")
+            end_date = Datas.set_to_wednesday(self,end_date)
             print(end_date)
             start_date = end_date - timedelta(days=12*7)
             print(start_date)
@@ -358,3 +457,4 @@ class GroupOptions(View):
             optionsList.append(option.name)
         output = {'datas': optionsList}
         return HttpResponse(json.dumps(output, ensure_ascii=False))
+

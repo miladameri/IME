@@ -1,3 +1,4 @@
+
 function initChartHajm(data1, data2) {
     var data = [
         {
@@ -77,22 +78,12 @@ function initChartHajm(data1, data2) {
 }
 
 $(document).ready(function () {
-    add_date_options();
 
-    var data_sanati = null;
-    var data_petroshimi = null;
-    var data_madani = null;
-    var data_keshavarzi = null;
-
+    console.log("in my js")
     $.ajax({
-        url: " {% url 'getDatas' %}",
+        url: "/maingroup",
         dataType: "json",
         data: {
-            "main_group": "?????",
-            "sub_group": "all",
-            "group": "all",
-            "product": "all",
-            "producer": "all",
             "time_slot": 12,
             "type": "trade",
             "end_date": "1394/08/26"
@@ -105,96 +96,6 @@ $(document).ready(function () {
             for (var i = 0; i < rawdata.length; i++) {
                 sum += rawdata[i];
             }
-            data_sanati = sum;
-        },
-        complete: function () {
-        },
-        error: function (xhr, textStatus, thrownError) {
-            alert("error doing something");
-        }
-    });
-
-    $.ajax({
-        url: " {% url 'getDatas' %}",
-        dataType: "json",
-        data: {
-            "main_group": "???????? ? ??????? ??? ????",
-            "sub_group": "all",
-            "group": "all",
-            "product": "all",
-            "producer": "all",
-            "time_slot": 12,
-            "type": "trade",
-            "end_date": "1394/08/26"
-        },
-        type: "GET",
-        success: function (response) {
-            console.log("im heeree");
-            var rawdata = response['data'][1];
-            var sum = 0;
-            for (var i = 0; i < rawdata.length; i++) {
-                sum += rawdata[i];
-            }
-            data_petroshimi = sum;
-        },
-        complete: function () {
-        },
-        error: function (xhr, textStatus, thrownError) {
-            alert("error doing something");
-        }
-    });
-    $.ajax({
-        url: " {% url 'getDatas' %}",
-        dataType: "json",
-        data: {
-            "main_group": "???????",
-            "sub_group": "all",
-            "group": "all",
-            "product": "all",
-            "producer": "all",
-            "time_slot": 12,
-            "type": "trade",
-            "end_date": "1394/08/26"
-        },
-        type: "GET",
-        success: function (response) {
-            console.log("im heeree");
-            var rawdata = response['data'][1];
-            var sum = 0;
-            for (var i = 0; i < rawdata.length; i++) {
-                sum += rawdata[i];
-            }
-            data_keshavarzi = sum;
-        },
-        complete: function () {
-        },
-        error: function (xhr, textStatus, thrownError) {
-            alert("error doing something");
-        }
-    });
-
-    $.ajax({
-        url: " {% url 'getDatas' %}",
-        dataType: "json",
-        data: {
-            "main_group": "?????",
-            "sub_group": "all",
-            "group": "all",
-            "product": "all",
-            "producer": "all",
-            "time_slot": 12,
-            "type": "trade",
-            "end_date": "1394/08/26"
-        },
-        type: "GET",
-        success: function (response) {
-            console.log("im heeree");
-            var rawdata = response['data'][1];
-            var sum = 0;
-            for (var i = 0; i < rawdata.length; i++) {
-                sum += rawdata[i];
-            }
-            data_keshavarzi = sum;
         },
         complete: function () {
         },
@@ -204,7 +105,6 @@ $(document).ready(function () {
     });
 
     initChartHajm(1, 2);
-    initChartArzesh();
 
 
 });
