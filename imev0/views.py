@@ -105,22 +105,22 @@ class Datas(View):
     #         d['supply_type'] = row[25].value
     #
     #         self.datas.append(d)
-
-    def get(self, request, *args, **kwargs):
-        per = request.GET['select_and_time[date]']
-        time_slot = 12
-        code = {u"۰":"0",u"۱":"1",u"۲":"2",u"۳":"3",u"۴":"4",u"۵":"5",u"۶":"6",u"۷":"7",u"۸":"8",u"۹":"9", u"/":"/"}
-        new_per = ''.join(code.get(ch, ch) for ch in per)
-        dates = new_per.split('/')
-
-        if (dates == ['']):
-            persian_date = jdate.date(1394, 8, 1)
-        else:
-            persian_date = jdate.date(int(dates[0]), int(dates[1]), int(dates[2]))
-        result = self.get_product_producer('copper',persian_date, time_slot )
-        datas = result
-        output = {'datas': datas}
-        return HttpResponse(json.dumps(output))
+    #
+    # def get(self, request, *args, **kwargs):
+    #     per = request.GET['select_and_time[date]']
+    #     time_slot = 12
+    #     code = {u"۰":"0",u"۱":"1",u"۲":"2",u"۳":"3",u"۴":"4",u"۵":"5",u"۶":"6",u"۷":"7",u"۸":"8",u"۹":"9", u"/":"/"}
+    #     new_per = ''.join(code.get(ch, ch) for ch in per)
+    #     dates = new_per.split('/')
+    #
+    #     if (dates == ['']):
+    #         persian_date = jdate.date(1394, 8, 1)
+    #     else:
+    #         persian_date = jdate.date(int(dates[0]), int(dates[1]), int(dates[2]))
+    #     result = self.get_product_producer('copper',persian_date, time_slot )
+    #     datas = result
+    #     output = {'datas': datas}
+    #     return HttpResponse(json.dumps(output))
 
 
     def initialize(self):
@@ -283,11 +283,13 @@ class Datas(View):
             # print(str(start_date)+ 'تاریخ شروع ')
             # print(str(end_date) + 'تاریخ پایان ')
             date = start_date
+            myDate = datetime.date(date.year, date.month, date.day)
+
             while date <= end_date:
                 # print(str(date) + 'curr date')
-                sum_value = all_transactions.filter(date__year = date.year).filter(date__month = date.month).aggregate(Sum(chart_name))
+                sum_value = all_transactions.filter(date__year = myDate.year).filter(date__month = myDate.month).aggregate(Sum(chart_name))[chart_name+'__sum']
 
-                if sum_value != 0:
+                if sum_value is not None and sum_value >  0:
                     x.append(date.j_months_fa[date.month - 1])
                     y.append(sum_value)
                 date += timedelta(days = 30)
