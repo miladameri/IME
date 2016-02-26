@@ -324,9 +324,10 @@ class MainGroupSums(View):
         for item in main_groups:
             trans = Transaction.objects.filter(product__group__subGroup__mainGroup__name = item)
             sum = self.extract_datas(time_slot,end_date,trans,chart_name)
-            output[item] = sum
+            output[item.name] = sum
             print(sum)
         print('again in here')
+        print(output)
         return HttpResponse(json.dumps(output, ensure_ascii=False))
 
 
