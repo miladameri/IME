@@ -83,7 +83,7 @@ $(document).ready(function () {
         data: {
             "time_slot": 12,
             "type": "trade",
-            "end_date": "1394/08/26"
+            "end_date": "1393/08/26"
         },
         type: "GET",
         success: function (response) {
