@@ -6,9 +6,11 @@ from imev0.models import *
 
 
 class TAdmin(admin.ModelAdmin):
-    list_display = ('persian_date', 'product', 'producer', 'supply', 'demand', 'trade', 'value_KRials')
+    list_display = ('date', 'product', 'producer', 'supply', 'demand', 'trade', 'value_KRials')
 
     def persian_date(self, obj):
+        return "sag"
+
         day = str(obj.date.day)
         year = str(obj.date.year)
         persian = {'0':'۰','1':'۱','2':'۲','3':'۳','4':'۴','5':'۵','6':'۶','7':'۷','8':'۸','9':'۹', '/':'/'}
@@ -18,6 +20,7 @@ class TAdmin(admin.ModelAdmin):
         new_month = months[obj.date.month]
         return "روز " + new_day + " " + new_month + " " + new_year
     persian_date.short_description = "تاریخ"
+
 
 admin.site.register(Transaction, TAdmin)
 

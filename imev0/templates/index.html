@@ -334,31 +334,6 @@
         }
 
         $(document).ready(function () {
-            $.ajax({
-                url: " {% url 'getDatas' %}",
-                dataType: "json",
-                data: {
-                    "select_and_time": select_and_time()
-                },
-                type: "GET",s
-                success: function (response) {
-
-                    datas = response['datas'];
-
-                    for (var i = 0; i < Object.keys(datas).length; i++) {
-
-                        var key = Object.keys(datas)[i];
-                        create_chart(datas, key);
-                    }
-
-                },
-                complete: function () {
-                },
-                error: function (xhr, textStatus, thrownError) {
-                    alert("error doing something");
-                }
-            });
-
         });
         persian = {'0': '۰', '1': '۱', '2': '۲', '3': '۳', '4': '۴', '5': '۵', '6': '۶', '7': '۷', '8': '۸', '9': '۹'};
 
