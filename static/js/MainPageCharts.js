@@ -1,38 +1,35 @@
 
 function initChartHajm(data1, data2) {
-    var data = [
-        {
-            value: 300,
-            color: "#F7464A",
-            highlight: "#FF5A5E",
-            label: "?????"
-        },
-        {
-            value: 50,
-            color: "#46BFBD",
-            highlight: "#5AD3D1",
-            label: "???????"
-        },
-        {
-            value: 100,
-            color: "#FDB45C",
-            highlight: "#FFC870",
-            label: "?????"
-        },
-        {
-            value: 40,
-            color: "#949FB1",
-            highlight: "#A8B3C5",
-            label: "????????"
-        },
-        {
-            value: 120,
-            color: "#4D5360",
-            highlight: "#616774",
-            label: "??????????? ????"
-        }
-
-    ];
+    var data = data1;
+    console.log();
+    //    [
+    //    {
+    //        value: 300,
+    //        highlight: "#FF5A5E",
+    //        label: "?????"
+    //    },
+    //    {
+    //        value: 50,
+    //        highlight: "#5AD3D1",
+    //        label: "???????"
+    //    },
+    //    {
+    //        value: 100,
+    //        highlight: "#FFC870",
+    //        label: "?????"
+    //    },
+    //    {
+    //        value: 40,
+    //        highlight: "#A8B3C5",
+    //        label: "????????"
+    //    },
+    //    {
+    //        value: 120,
+    //        highlight: "#616774",
+    //        label: "??????????? ????"
+    //    }
+    //
+    //];
     var data2 = [
         {
             value: 90,
@@ -78,8 +75,8 @@ function initChartHajm(data1, data2) {
 }
 
 $(document).ready(function () {
-
-    console.log("in my js")
+    data1 = [];
+    colors = ["#F7464A","#46BFBD","#FDB45C","#949FB1","#4D5360"];
     $.ajax({
         url: "/maingroup",
         dataType: "json",
@@ -90,12 +87,19 @@ $(document).ready(function () {
         },
         type: "GET",
         success: function (response) {
-            console.log("im heeree");
-            var rawdata = response['data'][1];
-            var sum = 0;
-            for (var i = 0; i < rawdata.length; i++) {
-                sum += rawdata[i];
+            datas = response['data']
+            console.log('heerees')
+            for (var i = 0; i < datas[0].length; i++) {
+                data1.push(
+                    {   value:datas[1][i],
+                        color:colors[i],
+                        label:datas[0][i]
+                    }
+                );
             }
+
+            initChartHajm(data1,2);
+
         },
         complete: function () {
         },
@@ -103,8 +107,6 @@ $(document).ready(function () {
             alert("error doing something");
         }
     });
-
-    initChartHajm(1, 2);
 
 
 });

@@ -314,7 +314,8 @@ class Datas(View):
 class MainGroupSums(View):
     def get(self, request, *args, **kwargs):
         output = {}
-
+        x = []
+        y = []
         chart_name = request.GET['type']
         end_date = request.GET['end_date']
         end_date = Datas.string_to_jdate(self,end_date)
@@ -324,10 +325,10 @@ class MainGroupSums(View):
         for item in main_groups:
             trans = Transaction.objects.filter(product__group__subGroup__mainGroup__name = item)
             sum = self.extract_datas(time_slot,end_date,trans,chart_name)
-            output[item.name] = sum
-            print(sum)
-        print('again in here')
-        print(output)
+            x.append(item.name)
+            y.append(sum)
+
+        output['data'] = (x,y)
         return HttpResponse(json.dumps(output, ensure_ascii=False))
 
 
@@ -365,7 +366,7 @@ class MainGroupSums(View):
             date = start_date
             while date <= end_date:
                 print(date.day , "   " , date.month)
-                myDate = datetime.date(date.year, date.month, date.day)
+                myDate = date
                 transactions = all_transactions.filter(date__gt = myDate)
 
                 sum_value = transactions.filter(date__lte =  (myDate + timedelta(days=7))).aggregate(Sum(chart_name))[chart_name+'__sum']
@@ -384,7 +385,7 @@ class MainGroupSums(View):
             # print(str(start_date)+ 'تاریخ شروع ')
             # print(str(end_date) + 'تاریخ پایان ')
             date = start_date
-            myDate = datetime.date(date.year, date.month, date.day)
+            myDate = date
 
             while date <= end_date:
                 # print(str(date) + 'curr date')
@@ -397,7 +398,6 @@ class MainGroupSums(View):
             d = (x, y)
 
 
-        print('pfff')
         for item in y:
             sum = sum + item
         return sum
