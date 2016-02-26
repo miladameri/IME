@@ -7,3 +7,4 @@ IME/__pycache__
 imev0/static/test2.xlsx
 db.sqlite3
 imev0/migrations
+mydatabase

@@ -250,7 +250,7 @@
 
 
         }
-        ;
+
 
 
         function initChart(data1, data2) {
@@ -334,6 +334,32 @@
         }
 
         $(document).ready(function () {
+            $.ajax({
+                url: " {% url 'getDatas' %}",
+                dataType: "json",
+                data:
+                {
+                    "main_group" : "صنعتی",
+                    "sub_group" : "all",
+                    "group" : "all",
+                    "product" : "all",
+                    "producer" : "all",
+                    "time_slot" : 1,
+                    "type" : "trade",
+                    "end_date": "1394/08/26"
+                },
+                type: "GET",
+                success: function (response) {
+                    console.log(response);
+                    initChart(1,2)
+                },
+                complete: function () {
+                },
+                error: function (xhr, textStatus, thrownError) {
+                    alert("error doing something");
+                }
+            });
+
         });
         persian = {'0': '۰', '1': '۱', '2': '۲', '3': '۳', '4': '۴', '5': '۵', '6': '۶', '7': '۷', '8': '۸', '9': '۹'};
 
