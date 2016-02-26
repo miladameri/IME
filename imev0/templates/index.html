@@ -62,7 +62,7 @@
     <script src="{% static 'jalalijscalendar/calendar.js' %}"></script>
     <script src="{% static 'jalalijscalendar/calendar-setup.js' %}"></script>
     <script src="{% static 'jalalijscalendar/lang/calendar-fa.js' %}"></script>
-
+    <script src="{% static 'js/MainPageCharts.js' %}"></script>
 
     <script>
         var lineChartData = {};
@@ -253,114 +253,6 @@
 
 
 
-        function initChart(data1, data2) {
-            var data = [
-                {
-                    value: 300,
-                    color: "#F7464A",
-                    highlight: "#FF5A5E",
-                    label: "صنعتی"
-                },
-                {
-                    value: 50,
-                    color: "#46BFBD",
-                    highlight: "#5AD3D1",
-                    label: "کشاورزی"
-                },
-                {
-                    value: 100,
-                    color: "#FDB45C",
-                    highlight: "#FFC870",
-                    label: "معدنی"
-                },
-                {
-                    value: 40,
-                    color: "#949FB1",
-                    highlight: "#A8B3C5",
-                    label: "پتروشیمی"
-                },
-                {
-                    value: 120,
-                    color: "#4D5360",
-                    highlight: "#616774",
-                    label: "فرآورده‌های نفتی"
-                }
-
-            ];
-            var data2 = [
-                {
-                    value: 90,
-                    color: "#F7464A",
-                    highlight: "#FF5A5E",
-                    label: "صنعتی"
-                },
-                {
-                    value: 25,
-                    color: "#46BFBD",
-                    highlight: "#5AD3D1",
-                    label: "کشاورزی"
-                },
-                {
-                    value: 100,
-                    color: "#FDB45C",
-                    highlight: "#FFC870",
-                    label: "معدنی"
-                },
-                {
-                    value: 16,
-                    color: "#949FB1",
-                    highlight: "#A8B3C5",
-                    label: "پتروشیمی"
-                },
-                {
-                    value: 14.4,
-                    color: "#4D5360",
-                    highlight: "#616774",
-                    label: "فرآورده‌های نفتی"
-                }
-
-            ];
-            var ctx = document.getElementById("Hajm").getContext("2d");
-            new Chart(ctx).PolarArea(data, {
-                responsive: true,
-            });
-            ctx = document.getElementById("Arzesh").getContext("2d");
-            new Chart(ctx).PolarArea(data2, {
-                responsive: true,
-            });
-            console.log($("#sel1").val());
-            add_date_options();
-            {#            get_data_from_server()#}
-        }
-
-        $(document).ready(function () {
-            $.ajax({
-                url: " {% url 'getDatas' %}",
-                dataType: "json",
-                data:
-                {
-                    "main_group" : "صنعتی",
-                    "sub_group" : "all",
-                    "group" : "all",
-                    "product" : "all",
-                    "producer" : "all",
-                    "time_slot" : 1,
-                    "type" : "trade",
-                    "end_date": "1394/08/26"
-                },
-                type: "GET",
-                success: function (response) {
-                    console.log(response);
-                    initChart(1,2)
-                },
-                complete: function () {
-                },
-                error: function (xhr, textStatus, thrownError) {
-                    alert("error doing something");
-                }
-            });
-
-        });
         persian = {'0': '۰', '1': '۱', '2': '۲', '3': '۳', '4': '۴', '5': '۵', '6': '۶', '7': '۷', '8': '۸', '9': '۹'};
 
         function persianize(n) {
