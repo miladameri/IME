@@ -329,7 +329,6 @@ class MainGroupSums(View):
             y.append(sum)
 
         output['data'] = (x,y)
-        print(y)
         return HttpResponse(json.dumps(output, ensure_ascii=False))
 
 
