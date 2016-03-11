@@ -17,12 +17,12 @@ class Command(BaseCommand):
         ws = wb.active  # ws is now an IterableWorksheet
         i = 0
         for row in ws:
+            print(i)
             if i == 0 or row[0] is None:
                 i += 1
                 continue
             dates = row[0].value.split('/')
-
-
+            i += 1
             productNum = Product.objects.filter(name=row[1].value).count()
             if productNum == 0:
                 groupNum = Group.objects.filter(name=row[18].value).count()

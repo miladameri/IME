@@ -21,4 +21,3 @@ urlpatterns = [
     url(r'^', include('imev0.urls')),
 
 ]
-#new comment
