@@ -16,13 +16,6 @@ THREE_MONTHS = 12
 ONE_YEAR = 52
 
 
-class Torob(View):
-    def get(self, request, *args, **kwargs):
-        print(request.GET['code'])
-        print(request.GET['state'])
-        return HttpResponse("Salam<br>Salam!")
-
-
 class Test(TemplateView):
     template_name = 'test-semantic.html'
     #template_name = 'test.html'

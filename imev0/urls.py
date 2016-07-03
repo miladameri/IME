@@ -13,6 +13,5 @@ urlpatterns = [
     url(r'^subOptions$', SubOptions.as_view(), name='getSubOptions'),
     url(r'^groupOptions$', GroupOptions.as_view(), name='getGroupOptions'),
     url(r'^maingroup$', MainGroupSums.as_view(), name='getGroups'),
-    url(r'^torob$', Torob.as_view(), name='torob'),
 
 ]
