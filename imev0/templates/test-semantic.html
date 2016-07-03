@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Semantic</title>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../static/semantic/semantic.min.css">
+    <script src="../../static/semantic/semantic.min.js"></script>
+    <script src="{% static 'js/MainPageCharts.js' %}"></script>
+    <script src="{% static 'Chart.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery.scrollTo.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery.nicescroll.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery.sparkline.js' %}" type="text/javascript"></script>
+    <script src="{% static 'assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/owl.carousel.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery.customSelect.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/common-scripts.js' %}"></script>
+    <script src="{% static 'js/sparkline-chart.js' %}"></script>
+    <script src="{% static 'js/easy-pie-chart.js' %}"></script>
+    <style>
+        html[lang="fa"],
+        html[lang="ar"] {
+            direction: rtl;
+        }
+        .pie-legend
+        {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .pie-legend li {
+            display: inline-block;
+            margin-left: 2px;
+        }
+
+        .pie-legend li span
+        {
+            text-decoration: none;
+            padding: 2px 5px 2px 5px;
+
+            color: white !important;
+        }
+
+        .pie-legend li a:hover
+        {
+            color: #fff;
+            background-color: #369;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            mainPageCharts();
+        });
+    </script>
+</head>
+<body>
+
+<div class="ui fixed top sticky segment"  style="max-height: 13%;">
+
+    <img src="../../static/img/ime-logo.png" style="max-height: 100%;" />
+    <!-- Any arbitrary content !-->
+</div>
+
+<div  id="context" class="ui doubling grid" style="padding-right: 2%; padding-top: 1%; padding-left: 2%">
+
+    <div class="ten wide column container">
+        <div class="ui card " style="width: 100%">
+            <div class="content">
+                <div class="header">ارزش معاملات در بازه‌ی یک‌ ساله</div>
+            </div>
+            <div class="content">
+
+                <p>1***************</p>
+                <p>12</p>
+                <p>123</p>
+                <p>12314</p>
+                <p>1241</p>
+                <p>1231</p>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="six wide column">
+        <div class="one column row">
+            <div class="ui card column container" style="width: 100%">
+                <div class="content">
+                    <div class="header">ارزش معاملات در بازه‌ی یک‌ ساله</div>
+                </div>
+                <div class="content">
+
+                    <p>1***************</p>
+                    <p>12</p>
+                    <p>123</p>
+                    <p>12314</p>
+                    <p>1241</p>
+                    <p>1231</p>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="one column row" style="margin-top: 2%">
+            <div class="ui card column container" style="width: 100%">
+                <div class="content">
+                    <div class="header">ارزش معاملات در بازه‌ی یک‌ ساله</div>
+                </div>
+                <div class="content" style="padding-right: 0">
+                    <canvas id="Hajm" style="margin: 0px !important;"></canvas>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('.ui.sticky').sticky({
+            context: '#context',
+            pushing: true
+        });
+    });
+</script>
+
+</body>
+</html>
